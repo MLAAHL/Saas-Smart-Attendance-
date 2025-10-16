@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Attendance Report - Smart Attendance System</title>
+  
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- SheetJS for Excel Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-light: #eef2ff;
+      --success: #22c55e;
+      --success-hover: #16a34a;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --warning: #f59e0b;
+      --grey-50: #f9fafb;
+      --grey-100: #f3f4f6;
+      --grey-200: #e5e7eb;
+      --grey-300: #d1d5db;
+      --grey-400: #9ca3af;
+      --grey-500: #6b7280;
+      --grey-600: #4b5563;
+      --grey-700: #374151;
+      --grey-800: #1f2937;
+      --grey-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: var(--grey-900);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      animation: fadeInDown 0.6s ease;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      margin-bottom: 2rem;
+    }
+
+    .back-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .header-icon {
+      width: 80px;
+      height: 80px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .header-icon i {
+      font-size: 2.5rem;
+      color: var(--primary);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.025em;
+    }
+
+    .header p {
+      font-size: 1.125rem;
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Card */
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--shadow-xl);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.6s ease;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 25px 35px -5px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--grey-100);
+    }
+
+    .card-header i {
+      color: var(--primary);
+      font-size: 1.75rem;
+    }
+
+    .card-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--grey-900);
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      align-items: end;
+    }
+
+    .form-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--grey-700);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group label i {
+      color: var(--primary);
+      font-size: 1.25rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.875rem 1.25rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--grey-900);
+      background: white;
+      border: 2px solid var(--grey-200);
+      border-radius: 10px;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.75rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--success) 0%, var(--success-hover) 100%);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-info:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Loading Spinner */
+    .loading-spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, var(--grey-50) 0%, white 100%);
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      border: 2px solid var(--grey-100);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-value {
+      font-size: 2.25rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card-blue .stat-value { color: #3b82f6; }
+    .stat-card-green .stat-value { color: var(--success); }
+    .stat-card-purple .stat-value { color: var(--primary); }
+
+    /* Subject Headers */
+    .subject-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 16px 16px 0 0;
+      margin-bottom: 0;
+    }
+
+    .subject-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .subject-badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 0.75rem;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Table */
+    .table-container {
+      background: white;
+      border-radius: 0 0 16px 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9375rem;
+    }
+
+    thead th {
+      background: linear-gradient(135deg, var(--grey-100) 0%, var(--grey-50) 100%);
+      padding: 1rem;
+      text-align: left;
+      font-weight: 700;
+      color: var(--grey-700);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 2px solid var(--grey-200);
+    }
+
+    thead th.text-center {
+      text-align: center;
+    }
+
+    tbody td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--grey-100);
+      color: var(--grey-800);
+    }
+
+    tbody td.text-center {
+      text-align: center;
+    }
+
+    tbody tr {
+      transition: background-color 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background-color: var(--primary-light);
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: var(--grey-50);
+    }
+
+    tbody tr:nth-child(even):hover {
+      background-color: var(--primary-light);
+    }
+
+    .percentage-excellent {
+      color: var(--success);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .percentage-good {
+      color: var(--warning);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .percentage-poor {
+      color: var(--danger);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--grey-400);
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--grey-600);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+      font-size: 0.9375rem;
+      color: var(--grey-500);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: white;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .card {
+        box-shadow: none;
+        page-break-inside: avoid;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      .header p {
+        font-size: 1rem;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .action-buttons {
+        flex-direction: column;
+      }
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    
+    <!-- Header -->
+    <div class="header no-print">
+      <a href="myclass.html" class="back-button">
+        <i class="material-icons-round">arrow_back</i>
+        <span>Back to Classes</span>
+      </a>
+      
+      <div class="header-icon">
+        <i class="material-icons-round">analytics</i>
+      </div>
+      <h1>📊 Student Attendance Report</h1>
+      <p>View attendance percentage for each student in each subject</p>
+    </div>
+
+    <!-- Filter Panel -->
+    <div class="card no-print">
+      <div class="card-header">
+        <i class="material-icons-round">filter_alt</i>
+        <h2>Generate Report</h2>
+      </div>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label>
+            <i class="material-icons-round">school</i>
+            Academic Stream
+          </label>
+          <select id="reportStream" class="form-control">
+            <option value="">Select Academic Stream</option>
+            <option value="BCA">BCA - Computer Applications</option>
+            <option value="BBA">BBA - Business Administration</option>
+            <option value="BCom">BCom - Commerce (Section A)</option>
+            <option value="BCom Section B">BCom Section B - Commerce</option>
+            <option value="BCom-BDA">BCom-BDA - Big Data Analytics</option>
+            <option value="BCom A and F">BCom A&F - Accounting & Finance</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>
+            <i class="material-icons-round">layers</i>
+            Semester Level
+          </label>
+          <select id="reportSemester" class="form-control">
+            <option value="">Select Semester</option>
+            <option value="1">First Semester</option>
+            <option value="2">Second Semester</option>
+            <option value="3">Third Semester</option>
+            <option value="4">Fourth Semester</option>
+            <option value="5">Fifth Semester</option>
+            <option value="6">Sixth Semester</option>
+          </select>
+        </div>
+        
+        <button onclick="generateReport()" id="generateBtn" class="btn btn-primary">
+          <i class="material-icons-round">timeline</i>
+          Generate Report
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="reportResults" class="hidden">
+      
+      <!-- Action Buttons -->
+      <div class="card no-print">
+        <div class="action-buttons">
+          <button onclick="exportToExcel()" class="btn btn-success">
+            <i class="material-icons-round">download</i>
+            Export to Excel
+          </button>
+          <button onclick="printReport()" class="btn btn-info">
+            <i class="material-icons-round">print</i>
+            Print Report
+          </button>
+        </div>
+      </div>
+
+      <!-- Report Header -->
+      <div class="card">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <h2 id="reportTitle" style="font-size: 2rem; font-weight: 800; color: var(--grey-900); margin-bottom: 0.5rem;">
+            Student Attendance Report
+          </h2>
+          <p style="color: var(--grey-600); font-size: 0.9375rem;">
+            Generated on: <span id="reportDate"></span>
+          </p>
+        </div>
+        
+        <!-- Summary Stats -->
+        <div class="stats-grid" id="summaryCards">
+          <!-- Dynamic summary cards -->
+        </div>
+      </div>
+
+      <!-- Subject Headers & Table -->
+      <div class="subject-header">
+        <h3>📚 Subjects</h3>
+        <div id="subjectHeaders" class="subject-grid">
+          <!-- Dynamic subject headers -->
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-wrapper">
+          <table id="reportTable">
+            <thead>
+              <tr id="tableHeader">
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <!-- Dynamic subject columns -->
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Dynamic student data -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+    </div>
+
+  </div>
+
+  <script src="js/report.js"></script>
+</body>
+</html>

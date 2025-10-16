@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Attendance - MLA Academy Login</title>
+    <!-- Add College Logo as Favicon -->
+    <link rel="icon" type="image/png" href="logo2.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="logo2.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="logo2.png" sizes="180x180">
+    <link rel="shortcut icon" href="logo2.png">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+  <style>
+    :root {
+      /* Beautiful Blue Gradient Palette */
+      --navy-deep: #001D39;
+      --ocean-blue: #0A4174;
+      --steel-blue: #49769F;
+      --teal-blue: #4E8EA2;
+      --sky-blue: #6EA2B3;
+      --light-blue: #7BBDE8;
+      --pale-blue: #BDD8E9;
+      
+      /* Status Colors */
+      --present: #4CAF50;
+      --absent: #EF5350;
+      --accent: #FFD54F;
+    }
+
+    * {
+      scroll-behavior: smooth;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(1, 29, 57, 0.03), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(10, 65, 116, 0.05), transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(73, 118, 159, 0.04), transparent 50%),
+        linear-gradient(135deg, var(--pale-blue) 0%, rgba(255, 255, 255, 0.9) 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      user-select: none;
+    }
+
+    /* Subtle gradient overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(1, 29, 57, 0.03), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(10, 65, 116, 0.05), transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(73, 118, 159, 0.04), transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .login-container {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(189, 216, 233, 0.4);
+      box-shadow: 
+        0 8px 32px rgba(1, 29, 57, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.6) inset;
+      border-radius: 20px;
+      max-width: 340px;
+      width: 100%;
+      padding: 28px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--steel-blue), var(--light-blue), var(--sky-blue));
+      border-radius: 20px 20px 0 0;
+    }
+    
+    .login-container:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 12px 40px rgba(1, 29, 57, 0.15),
+        0 1px 0 rgba(255, 255, 255, 0.6) inset;
+    }
+    
+    .college-branding {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(189, 216, 233, 0.3);
+      position: relative;
+    }
+    
+    .college-logo {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      position: relative;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 
+        0 6px 20px rgba(73, 118, 159, 0.25),
+        0 2px 8px rgba(1, 29, 57, 0.15);
+      background: linear-gradient(135deg, var(--steel-blue) 0%, var(--teal-blue) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .college-logo:hover {
+      transform: translateY(-1px);
+      box-shadow: 
+        0 8px 25px rgba(73, 118, 159, 0.3),
+        0 3px 12px rgba(1, 29, 57, 0.2);
+    }
+
+    .college-logo-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      position: relative;
+      z-index: 2;
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    .college-logo-img:hover {
+      transform: scale(1.02);
+    }
+
+    .college-logo-fallback {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      color: white;
+      font-size: 1.6rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .college-logo-img:error {
+      display: none;
+    }
+
+    .college-logo-img:error + .college-logo-fallback {
+      opacity: 1;
+    }
+
+    .college-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--navy-deep);
+      margin: 0 0 6px 0;
+      letter-spacing: -0.025em;
+      line-height: 1.3;
+    }
+
+    .system-name {
+      font-size: 0.9rem;
+      color: var(--steel-blue);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .system-name i {
+      color: var(--steel-blue);
+      font-size: 0.85rem;
+    }
+    
+    .welcome-section {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .welcome-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--navy-deep);
+      margin: 0 0 6px;
+      letter-spacing: -0.025em;
+    }
+    
+    .welcome-subtitle {
+      color: rgba(1, 29, 57, 0.6);
+      margin: 0 0 12px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    
+    .form-group {
+      margin-bottom: 18px;
+    }
+    
+    .form-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--navy-deep);
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+    }
+    
+    .form-label i {
+      color: var(--steel-blue);
+      width: 14px;
+      font-size: 0.85rem;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid rgba(123, 189, 232, 0.2);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: var(--navy-deep);
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--steel-blue);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 
+        0 0 0 3px rgba(73, 118, 159, 0.1),
+        0 4px 15px rgba(78, 142, 162, 0.15);
+      transform: translateY(-1px);
+    }
+    
+    .password-container {
+      position: relative;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(1, 29, 57, 0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 4px;
+      font-size: 0.9rem;
+      border-radius: 6px;
+    }
+    
+    .password-toggle:hover {
+      color: var(--steel-blue);
+      background: rgba(123, 189, 232, 0.1);
+    }
+    
+    .remember-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 8px;
+    }
+    
+    .remember-group input {
+      accent-color: var(--steel-blue);
+      transform: scale(1.1);
+    }
+    
+    .remember-group label {
+      font-size: 0.85rem;
+      color: rgba(1, 29, 57, 0.7);
+      cursor: pointer;
+      font-weight: 500;
+    }
+    
+    .login-button {
+      width: 100%;
+      background: linear-gradient(135deg, var(--ocean-blue), var(--steel-blue));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        0 4px 15px rgba(10, 65, 116, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.3) inset;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .login-button:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--navy-deep), var(--ocean-blue));
+      transform: translateY(-2px);
+      box-shadow: 
+        0 8px 25px rgba(1, 29, 57, 0.4),
+        0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    }
+    
+    .login-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 6px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .alert {
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid;
+    }
+    
+    .alert i {
+      margin-right: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .alert-error {
+      background: rgba(239, 83, 80, 0.1);
+      color: var(--absent);
+      border-color: rgba(239, 83, 80, 0.3);
+    }
+    
+    .alert-success {
+      background: rgba(76, 175, 80, 0.1);
+      color: var(--present);
+      border-color: rgba(76, 175, 80, 0.3);
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(189, 216, 233, 0.3);
+    }
+    
+    .footer p {
+      color: rgba(1, 29, 57, 0.6);
+      font-size: 0.75rem;
+      margin: 3px 0;
+      font-weight: 500;
+    }
+
+    .footer i {
+      margin-right: 4px;
+      color: var(--steel-blue);
+    }
+
+    /* Enhanced Loading Screen */
+    .auth-loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(1, 29, 57, 0.03), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(10, 65, 116, 0.05), transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(73, 118, 159, 0.04), transparent 50%),
+        linear-gradient(135deg, var(--pale-blue) 0%, rgba(255, 255, 255, 0.9) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      color: var(--navy-deep);
+    }
+
+    .loading-brand {
+      text-align: center;
+      max-width: 320px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(189, 216, 233, 0.4);
+      box-shadow: 
+        0 8px 32px rgba(1, 29, 57, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.6) inset;
+      padding: 32px;
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loading-brand::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--steel-blue), var(--light-blue), var(--sky-blue));
+      border-radius: 24px 24px 0 0;
+    }
+
+    .loading-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      position: relative;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 
+        0 8px 24px rgba(1, 29, 57, 0.15),
+        0 4px 12px rgba(73, 118, 159, 0.2);
+      background: linear-gradient(135deg, var(--steel-blue) 0%, var(--teal-blue) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .loading-logo .college-logo-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      position: relative;
+      z-index: 2;
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    .logo-fallback {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      color: white;
+      font-size: 2rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-logo .college-logo-img:error {
+      display: none;
+    }
+
+    .loading-logo .college-logo-img:error + .logo-fallback {
+      opacity: 1;
+    }
+
+    .loading-brand h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--navy-deep);
+      margin: 0 0 8px 0;
+      letter-spacing: -0.025em;
+      line-height: 1.3;
+    }
+
+    .loading-brand .system-name {
+      font-size: 1rem;
+      color: var(--steel-blue);
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .loading-brand p {
+      color: rgba(1, 29, 57, 0.7);
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    /* Enhanced Progress Bar */
+    .progress-container {
+      width: 260px;
+      height: 6px;
+      background: rgba(189, 216, 233, 0.3);
+      border-radius: 3px;
+      overflow: hidden;
+      margin: 24px auto 0;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(1, 29, 57, 0.1);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--steel-blue) 0%, var(--light-blue) 50%, var(--steel-blue) 100%);
+      border-radius: 3px;
+      animation: progressFlow 2.5s ease-in-out infinite;
+      position: relative;
+      box-shadow: 0 1px 4px rgba(73, 118, 159, 0.3);
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+      animation: progressShimmer 1.5s infinite;
+    }
+
+    @keyframes progressFlow {
+      0% { width: 0%; transform: translateX(0); }
+      50% { width: 70%; transform: translateX(0); }
+      100% { width: 100%; transform: translateX(0); }
+    }
+
+    @keyframes progressShimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(200%); }
+    }
+
+    .progress-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .progress-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(123, 189, 232, 0.4);
+      animation: dotPulse 1.5s infinite ease-in-out;
+    }
+
+    .progress-dot:nth-child(1) { animation-delay: 0s; }
+    .progress-dot:nth-child(2) { animation-delay: 0.2s; }
+    .progress-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dotPulse {
+      0%, 60%, 100% {
+        background: rgba(123, 189, 232, 0.4);
+        transform: scale(1);
+      }
+      30% {
+        background: var(--steel-blue);
+        transform: scale(1.2);
+      }
+    }
+
+    /* Hidden honeypot field */
+    .honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      overflow: hidden !important;
+    }
+
+    /* Modern blue scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(189, 216, 233, 0.2);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, var(--steel-blue), var(--teal-blue));
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, var(--ocean-blue), var(--steel-blue));
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 480px) {
+      body {
+        padding: 6px;
+      }
+      
+      .login-container {
+        padding: 18px;
+        max-width: 320px;
+        margin: 8px;
+      }
+      
+      .college-branding {
+        margin-bottom: 16px;
+        padding-bottom: 14px;
+      }
+      
+      .college-logo {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 10px;
+      }
+      
+      .college-logo-img {
+        width: 48px;
+        height: 48px;
+      }
+      
+      .college-logo-fallback {
+        font-size: 1.2rem;
+      }
+      
+      .college-name {
+        font-size: 1rem;
+        margin-bottom: 4px;
+      }
+      
+      .welcome-section {
+        margin-bottom: 14px;
+      }
+      
+      .welcome-title {
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+      }
+      
+      .welcome-subtitle {
+        margin-bottom: 8px;
+        font-size: 0.8rem;
+      }
+      
+      .form-group {
+        margin-bottom: 14px;
+      }
+      
+      .form-input {
+        padding: 10px 14px;
+        font-size: 0.85rem;
+      }
+      
+      .form-label {
+        margin-bottom: 4px;
+        font-size: 0.8rem;
+      }
+      
+      .remember-group {
+        margin-bottom: 16px;
+      }
+      
+      .login-button {
+        padding: 11px 16px;
+        font-size: 0.9rem;
+      }
+      
+      .footer {
+        margin-top: 16px;
+        padding-top: 12px;
+      }
+      
+      .footer p {
+        font-size: 0.7rem;
+        margin: 2px 0;
+      }
+      
+      .loading-brand {
+        padding: 24px;
+        max-width: 300px;
+        margin: 0 12px;
+      }
+      
+      .loading-logo {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 14px;
+      }
+      
+      .loading-logo .college-logo-img {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .logo-fallback {
+        font-size: 1.4rem;
+      }
+      
+      .loading-brand h2 {
+        font-size: 1rem;
+        margin-bottom: 6px;
+      }
+      
+      .loading-brand .system-name {
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+      }
+      
+      .progress-container {
+        width: 200px;
+        margin-top: 18px;
+      }
+      
+      .progress-dots {
+        margin-top: 16px;
+      }
+      
+      .system-name {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding: 4px;
+      }
+      
+      .login-container {
+        padding: 16px;
+        max-width: 300px;
+      }
+      
+      .college-branding {
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+      }
+      
+      .college-logo {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 8px;
+      }
+      
+      .college-logo-img {
+        width: 44px;
+        height: 44px;
+      }
+      
+      .college-name {
+        font-size: 0.95rem;
+      }
+      
+      .welcome-section {
+        margin-bottom: 12px;
+      }
+      
+      .form-group {
+        margin-bottom: 12px;
+      }
+      
+      .form-input {
+        padding: 9px 12px;
+      }
+      
+      .remember-group {
+        margin-bottom: 14px;
+      }
+      
+      .loading-brand {
+        padding: 20px;
+        max-width: 280px;
+      }
+      
+      .loading-logo {
+        width: 54px;
+        height: 54px;
+      }
+      
+      .loading-logo .college-logo-img {
+        width: 54px;
+        height: 54px;
+      }
+      
+      .progress-container {
+        width: 180px;
+      }
+    }
+
+    @media (max-width: 320px) {
+      .login-container {
+        padding: 14px;
+        max-width: 280px;
+      }
+      
+      .college-logo {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .college-logo-img {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .college-logo-fallback {
+        font-size: 1rem;
+      }
+      
+      .college-name {
+        font-size: 0.9rem;
+      }
+      
+      .system-name {
+        font-size: 0.75rem;
+      }
+      
+      .loading-brand {
+        padding: 18px;
+        max-width: 260px;
+      }
+      
+      .loading-logo {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .loading-logo .college-logo-img {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .progress-container {
+        width: 160px;
+      }
+    }
+
+    @media (max-height: 500px) and (orientation: landscape) {
+      body {
+        padding: 4px;
+        align-items: flex-start;
+        padding-top: 10px;
+      }
+      
+      .login-container {
+        padding: 12px;
+        margin: 4px 0;
+      }
+      
+      .college-branding {
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+      }
+      
+      .welcome-section {
+        margin-bottom: 8px;
+      }
+      
+      .form-group {
+        margin-bottom: 10px;
+      }
+      
+      .footer {
+        margin-top: 12px;
+        padding-top: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body class="no-select">
+  <!-- Enhanced Loading Screen -->
+  <div id="initialLoadingScreen" class="auth-loading-screen">
+    <div class="loading-brand">
+      <div class="loading-logo">
+        <img src="logo2.png" alt="MLA Academy Logo" class="college-logo-img">
+        <i class="fas fa-graduation-cap logo-fallback"></i>
+      </div>
+      
+      <h2>MLA Academy of Higher Learning</h2>
+      <div class="system-name">
+        <i class="fas fa-clipboard-check"></i>
+        Smart Attendance
+      </div>
+      <p>Initializing secure portal...</p>
+      
+      <div class="progress-container">
+        <div class="progress-bar"></div>
+      </div>
+      
+      <div class="progress-dots">
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+      </div>
+      
+      <p style="margin-top: 16px; opacity: 0.6;">Please wait...</p>
+    </div>
+  </div>
+
+  <!-- Main Login Form -->
+  <div id="loginContent" class="login-container" style="display: none;">
+    
+    <!-- College Branding -->
+    <div class="college-branding">
+      <div class="college-logo">
+        <img src="logo2.png" alt="MLA Academy Logo" class="college-logo-img">
+        <i class="fas fa-graduation-cap college-logo-fallback"></i>
+      </div>
+      <h1 class="college-name">MLA Academy of Higher Learning</h1>
+      <div class="system-name">
+        <i class="fas fa-clipboard-check"></i>
+        Smart Attendance
+      </div>
+    </div>
+
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+      <h2 class="welcome-title">Teacher Login</h2>
+      <p class="welcome-subtitle">Access your dashboard</p>
+    </div>
+
+    <!-- Login Form -->
+    <form id="loginForm">
+      <!-- Honeypot trap for bots -->
+      <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off">
+      
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fas fa-envelope"></i>Email
+        </label>
+        <input 
+          type="email" 
+          id="email" 
+          class="form-input"
+          placeholder="Your email address"
+          required
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fas fa-lock"></i>Password
+        </label>
+        <div class="password-container">
+          <input 
+            type="password" 
+            id="password" 
+            class="form-input"
+            placeholder="Your password"
+            style="padding-right: 40px;"
+            required
+            autocomplete="current-password"
+          />
+          <button type="button" id="togglePassword" class="password-toggle">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="remember-group">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe">Keep me signed in</label>
+      </div>
+
+      <button type="submit" id="loginButton" class="login-button">
+        <span id="loginButtonText">
+          <i class="fas fa-sign-in-alt"></i>Sign In
+        </span>
+      </button>
+    </form>
+
+    <!-- Alert Messages -->
+    <div id="errorMessage" class="alert alert-error" style="display: none;">
+      <i class="fas fa-exclamation-circle"></i>
+      <div id="errorText"></div>
+    </div>
+
+    <div id="successMessage" class="alert alert-success" style="display: none;">
+      <i class="fas fa-check-circle"></i>
+      <div id="successText"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p><i class="fas fa-shield-alt"></i>Secure Portal</p>
+      <p>© 2025 MLA Academy of Higher Learning</p>
+      <p style="opacity: 0.7;">Smart Attendance v2.1</p>
+    </div>
+  </div>
+
+  <script type="module">
+    // Import configuration from separate config file
+    import { firebaseConfig } from './firebase-config.js';
+    
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      onAuthStateChanged,
+      setPersistence,
+      browserLocalPersistence,
+      browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // ============================================================================
+    // SECURITY CONFIGURATION
+    // ============================================================================
+
+    const SECURITY_CONFIG = {
+      MAX_LOGIN_ATTEMPTS: 5,
+      LOCKOUT_DURATION: 15 * 60 * 1000, // 15 minutes
+      SESSION_TIMEOUT: 7 * 24 * 60 * 60 * 1000, // 7 days
+      SESSION_REFRESH_INTERVAL: 24 * 60 * 60 * 1000, // 24 hours
+      IDLE_TIMEOUT: 30 * 60 * 1000 // 30 minutes of inactivity
+    };
+
+    let securityState = {
+      loginAttempts: parseInt(localStorage.getItem("loginAttempts") || "0"),
+      lockoutUntil: parseInt(localStorage.getItem("lockoutUntil") || "0")
+    };
+
+    // ============================================================================
+    // DOM ELEMENTS
+    // ============================================================================
+
+    const elements = {
+      initialLoadingScreen: document.getElementById("initialLoadingScreen"),
+      loginContent: document.getElementById("loginContent"),
+      loginForm: document.getElementById("loginForm"),
+      loginButton: document.getElementById("loginButton"),
+      loginButtonText: document.getElementById("loginButtonText"),
+      errorMessage: document.getElementById("errorMessage"),
+      errorText: document.getElementById("errorText"),
+      successMessage: document.getElementById("successMessage"),
+      successText: document.getElementById("successText"),
+      togglePassword: document.getElementById("togglePassword"),
+      emailInput: document.getElementById("email"),
+      passwordInput: document.getElementById("password"),
+      rememberMeCheckbox: document.getElementById("rememberMe")
+    };
+
+    // ============================================================================
+    // SESSION MANAGER CLASS
+    // ============================================================================
+
+    class PersistentSessionManager {
+      static SESSION_KEYS = [
+        'userName', 'userEmail', 'firebaseUid', 'loginTime', 
+        'isAuthenticated', 'sessionExpiry', 'lastActivity',
+        'deviceId', 'sessionId'
+      ];
+
+      static generateDeviceFingerprint() {
+        try {
+          const fingerprint = [
+            navigator.userAgent,
+            navigator.language,
+            screen.width + 'x' + screen.height,
+            new Date().getTimezoneOffset(),
+            navigator.hardwareConcurrency || 'unknown'
+          ].join('|');
+          
+          return btoa(fingerprint).substring(0, 32);
+        } catch (error) {
+          console.error('Error generating fingerprint:', error);
+          return 'unknown_device';
+        }
+      }
+
+      static generateSessionId() {
+        return 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
+      }
+
+      static isValidSession() {
+        const localStorage_session = this.getSessionData('localStorage');
+        const sessionStorage_session = this.getSessionData('sessionStorage');
+        
+        if (localStorage_session.isValid && this.validateDeviceFingerprint(localStorage_session.data)) {
+          this.updateLastActivity('localStorage');
+          return { isValid: true, storage: 'localStorage', data: localStorage_session.data };
+        }
+        
+        if (sessionStorage_session.isValid && this.validateDeviceFingerprint(sessionStorage_session.data)) {
+          this.updateLastActivity('sessionStorage');
+          return { isValid: true, storage: 'sessionStorage', data: sessionStorage_session.data };
+        }
+        
+        return { isValid: false };
+      }
+
+      static getSessionData(storageType) {
+        const storage = storageType === 'localStorage' ? localStorage : sessionStorage;
+        
+        try {
+          const sessionExpiry = parseInt(storage.getItem('sessionExpiry') || '0');
+          const lastActivity = parseInt(storage.getItem('lastActivity') || '0');
+          const isAuthenticated = storage.getItem('isAuthenticated') === 'true';
+          const firebaseUid = storage.getItem('firebaseUid');
+          
+          const now = Date.now();
+          const isExpired = sessionExpiry > 0 && now > sessionExpiry;
+          const isInactive = lastActivity > 0 && (now - lastActivity) > SECURITY_CONFIG.IDLE_TIMEOUT;
+          
+          if (isAuthenticated && firebaseUid && !isExpired && !isInactive) {
+            return {
+              isValid: true,
+              data: {
+                userName: storage.getItem('userName'),
+                userEmail: storage.getItem('userEmail'),
+                firebaseUid: firebaseUid,
+                loginTime: storage.getItem('loginTime'),
+                lastActivity: lastActivity,
+                deviceId: storage.getItem('deviceId'),
+                sessionId: storage.getItem('sessionId')
+              }
+            };
+          }
+          
+          if (isAuthenticated && (isExpired || isInactive)) {
+            this.clearSessionData(storageType);
+            console.log(`⏰ Expired session cleared from ${storageType}`);
+          }
+          
+          return { isValid: false };
+        } catch (error) {
+          console.error('Error reading session:', error);
+          this.clearSessionData(storageType);
+          return { isValid: false };
+        }
+      }
+
+      static validateDeviceFingerprint(sessionData) {
+        if (!sessionData || !sessionData.deviceId) return false;
+        const currentFingerprint = this.generateDeviceFingerprint();
+        return sessionData.deviceId === currentFingerprint;
+      }
+
+      static updateLastActivity(storageType) {
+        const storage = storageType === 'localStorage' ? localStorage : sessionStorage;
+        const now = Date.now();
+        const lastUpdate = parseInt(storage.getItem('lastActivity') || '0');
+        
+        if (now - lastUpdate > 60000) {
+          storage.setItem('lastActivity', now.toString());
+        }
+      }
+
+      static createSession(user, email, persistent = false) {
+        const storage = persistent ? localStorage : sessionStorage;
+        this.clearSessionData(persistent ? 'sessionStorage' : 'localStorage');
+        
+        const sessionData = {
+          userName: user.displayName || email.split('@')[0],
+          userEmail: email,
+          firebaseUid: user.uid,
+          loginTime: Date.now(),
+          isAuthenticated: 'true',
+          sessionExpiry: Date.now() + SECURITY_CONFIG.SESSION_TIMEOUT,
+          lastActivity: Date.now(),
+          deviceId: this.generateDeviceFingerprint(),
+          sessionId: this.generateSessionId()
+        };
+
+        Object.entries(sessionData).forEach(([key, value]) => {
+          storage.setItem(key, value.toString());
+        });
+
+        console.log('✅ Session created:', {
+          storage: persistent ? 'localStorage' : 'sessionStorage',
+          firebaseUid: user.uid,
+          sessionId: sessionData.sessionId
+        });
+        
+        return sessionData;
+      }
+
+      static extendSession(additionalTime = SECURITY_CONFIG.SESSION_REFRESH_INTERVAL) {
+        const sessionCheck = this.isValidSession();
+        if (!sessionCheck.isValid) return false;
+        
+        const storage = sessionCheck.storage === 'localStorage' ? localStorage : sessionStorage;
+        const newExpiry = Date.now() + additionalTime;
+        
+        storage.setItem('sessionExpiry', newExpiry.toString());
+        this.updateLastActivity(sessionCheck.storage);
+        
+        console.log('🔄 Session extended');
+        return true;
+      }
+
+      static needsRefresh() {
+        const sessionCheck = this.isValidSession();
+        if (!sessionCheck.isValid) return false;
+        
+        const storage = sessionCheck.storage === 'localStorage' ? localStorage : sessionStorage;
+        const sessionExpiry = parseInt(storage.getItem('sessionExpiry') || '0');
+        const oneHourMs = 60 * 60 * 1000;
+        
+        return (sessionExpiry - Date.now()) < oneHourMs;
+      }
+
+      static clearSessionData(storageType) {
+        const storage = storageType === 'localStorage' ? localStorage : sessionStorage;
+        this.SESSION_KEYS.forEach(key => storage.removeItem(key));
+      }
+
+      static clearAllSessions() {
+        this.clearSessionData('localStorage');
+        this.clearSessionData('sessionStorage');
+        console.log('🧹 All sessions cleared');
+      }
+
+      static getSessionInfo() {
+        const sessionCheck = this.isValidSession();
+        if (!sessionCheck.isValid) return { isLoggedIn: false };
+
+        const data = sessionCheck.data;
+        const storage = sessionCheck.storage === 'localStorage' ? 
+          localStorage.getItem('sessionExpiry') : 
+          sessionStorage.getItem('sessionExpiry');
+        
+        const timeRemaining = parseInt(storage) - Date.now();
+
+        return {
+          isLoggedIn: true,
+          userName: data.userName,
+          userEmail: data.userEmail,
+          sessionType: sessionCheck.storage === 'localStorage' ? 'persistent' : 'temporary',
+          timeRemaining: Math.max(0, timeRemaining),
+          lastActivity: new Date(data.lastActivity).toLocaleString(),
+          sessionId: data.sessionId
+        };
+      }
+    }
+
+    // ============================================================================
+    // DEVELOPER TOOLS PREVENTION
+    // ============================================================================
+
+    function preventInspection() {
+      document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        return false;
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (
+          e.key === 'F12' ||
+          (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C')) ||
+          (e.ctrlKey && e.key === 'u') ||
+          (e.ctrlKey && e.key === 's')
+        ) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      document.addEventListener('selectstart', (e) => {
+        if (e.target.closest('.no-select')) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      let devtools = { open: false };
+      const threshold = 160;
+      setInterval(() => {
+        if (window.outerHeight - window.innerHeight > threshold || 
+            window.outerWidth - window.innerWidth > threshold) {
+          if (!devtools.open) {
+            devtools.open = true;
+            console.clear();
+            console.log('%cAccess Restricted', 'color: red; font-size: 20px; font-weight: bold;');
+          }
+        } else {
+          devtools.open = false;
+        }
+      }, 500);
+    }
+
+    preventInspection();
+
+    // ============================================================================
+    // UI HELPER FUNCTIONS
+    // ============================================================================
+
+    function showInitialLoading() {
+      if (elements.initialLoadingScreen) elements.initialLoadingScreen.style.display = 'flex';
+      if (elements.loginContent) elements.loginContent.style.display = 'none';
+    }
+
+    function hideInitialLoading() {
+      if (elements.initialLoadingScreen) elements.initialLoadingScreen.style.display = 'none';
+      if (elements.loginContent) elements.loginContent.style.display = 'block';
+    }
+
+    function showError(message) {
+      if (elements.errorText) elements.errorText.textContent = message;
+      if (elements.errorMessage) elements.errorMessage.style.display = 'flex';
+      if (elements.successMessage) elements.successMessage.style.display = 'none';
+    }
+
+    function showSuccess(message) {
+      if (elements.successText) elements.successText.textContent = message;
+      if (elements.successMessage) elements.successMessage.style.display = 'flex';
+      if (elements.errorMessage) elements.errorMessage.style.display = 'none';
+    }
+
+    function hideMessages() {
+      if (elements.errorMessage) elements.errorMessage.style.display = 'none';
+      if (elements.successMessage) elements.successMessage.style.display = 'none';
+    }
+
+    function setLoginButtonLoading(loading) {
+      if (!elements.loginButton || !elements.loginButtonText) return;
+      
+      if (loading) {
+        elements.loginButtonText.innerHTML = '<div class="loading-spinner"></div>Signing In...';
+        elements.loginButton.disabled = true;
+      } else {
+        elements.loginButtonText.innerHTML = '<i class="fas fa-sign-in-alt"></i>Sign In';
+        elements.loginButton.disabled = isLockedOut();
+      }
+    }
+
+    function isLockedOut() {
+      return Date.now() < securityState.lockoutUntil;
+    }
+
+    function recordFailedAttempt() {
+      securityState.loginAttempts++;
+      localStorage.setItem("loginAttempts", securityState.loginAttempts.toString());
+
+      if (securityState.loginAttempts >= SECURITY_CONFIG.MAX_LOGIN_ATTEMPTS) {
+        securityState.lockoutUntil = Date.now() + SECURITY_CONFIG.LOCKOUT_DURATION;
+        localStorage.setItem("lockoutUntil", securityState.lockoutUntil.toString());
+        
+        const lockoutMinutes = Math.ceil(SECURITY_CONFIG.LOCKOUT_DURATION / 60000);
+        showError(`Account locked for ${lockoutMinutes} minutes due to multiple failed attempts.`);
+        if (elements.loginButton) elements.loginButton.disabled = true;
+        
+        setTimeout(() => location.reload(), SECURITY_CONFIG.LOCKOUT_DURATION);
+      }
+    }
+
+    function resetSecurityState() {
+      securityState.loginAttempts = 0;
+      securityState.lockoutUntil = 0;
+      localStorage.removeItem("loginAttempts");
+      localStorage.removeItem("lockoutUntil");
+    }
+
+    let isRedirecting = false;
+
+    function redirectToApp(user, email, isAutoLogin = false) {
+      if (isRedirecting) return;
+      isRedirecting = true;
+
+      const rememberMe = isAutoLogin ? 
+        (localStorage.getItem('userName') ? true : false) : 
+        (elements.rememberMeCheckbox?.checked || false);
+
+      PersistentSessionManager.createSession(user, email, rememberMe);
+
+      if (!isAutoLogin) {
+        showSuccess("Login successful! Redirecting...");
+        resetSecurityState();
+      }
+      
+      setTimeout(() => {
+        window.location.replace("myclass.html");
+      }, isAutoLogin ? 100 : 1800);
+    }
+
+    // ============================================================================
+    // PASSWORD TOGGLE
+    // ============================================================================
+
+    if (elements.togglePassword) {
+      elements.togglePassword.addEventListener('click', () => {
+        const icon = elements.togglePassword.querySelector('i');
+        
+        if (elements.passwordInput.type === 'password') {
+          elements.passwordInput.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          elements.passwordInput.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      });
+    }
+
+    // ============================================================================
+    // LOGIN FORM HANDLER
+    // ============================================================================
+
+    if (elements.loginForm) {
+      elements.loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        if (e.target.website?.value) return; // Bot detection
+        
+        if (isLockedOut()) {
+          const remainingMinutes = Math.ceil((securityState.lockoutUntil - Date.now()) / 60000);
+          showError(`Account locked. Try again in ${remainingMinutes} minutes.`);
+          return;
+        }
+
+        hideMessages();
+        setLoginButtonLoading(true);
+
+        const email = elements.emailInput?.value.trim().toLowerCase();
+        const password = elements.passwordInput?.value;
+
+        if (!email || !password) {
+          showError('Please enter email and password');
+          setLoginButtonLoading(false);
+          return;
+        }
+
+        try {
+          const rememberMe = elements.rememberMeCheckbox?.checked || false;
+          const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+          await setPersistence(auth, persistence);
+          
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+          
+          redirectToApp(user, email, false);
+
+        } catch (error) {
+          let errorMessage = "Authentication failed";
+          
+          switch (error.code) {
+            case 'auth/user-not-found':
+              errorMessage = "No account found with this email.";
+              break;
+            case 'auth/wrong-password':
+              errorMessage = "Incorrect password.";
+              break;
+            case 'auth/invalid-email':
+              errorMessage = "Invalid email format.";
+              break;
+            case 'auth/too-many-requests':
+              errorMessage = "Too many attempts. Try again later.";
+              break;
+            case 'auth/network-request-failed':
+              errorMessage = "Network error. Check your connection.";
+              break;
+            case 'auth/invalid-credential':
+              errorMessage = "Invalid email or password.";
+              break;
+            default:
+              errorMessage = `Login failed: ${error.message}`;
+          }
+          
+          recordFailedAttempt();
+          showError(errorMessage);
+          
+        } finally {
+          setLoginButtonLoading(false);
+        }
+      });
+    }
+
+    // ============================================================================
+    // AUTO-LOGIN CHECK
+    // ============================================================================
+
+    showInitialLoading();
+
+    onAuthStateChanged(auth, (user) => {
+      setTimeout(() => {
+        if (user && user.email) {
+          const sessionCheck = PersistentSessionManager.isValidSession();
+          
+          if (sessionCheck.isValid) {
+            console.log('✅ Valid session found, auto-logging in');
+            redirectToApp(user, user.email, true);
+          } else {
+            console.log('❌ No valid session');
+            PersistentSessionManager.clearAllSessions();
+            hideInitialLoading();
+            setTimeout(() => elements.emailInput?.focus(), 100);
+          }
+        } else {
+          PersistentSessionManager.clearAllSessions();
+          hideInitialLoading();
+          setTimeout(() => elements.emailInput?.focus(), 100);
+        }
+      }, 1200);
+    });
+
+    // ============================================================================
+    // LOCKOUT CHECK
+    // ============================================================================
+
+    setTimeout(() => {
+      if (isLockedOut()) {
+        const remainingMinutes = Math.ceil((securityState.lockoutUntil - Date.now()) / 60000);
+        showError(`Account locked. Wait ${remainingMinutes} minutes.`);
+        if (elements.loginButton) elements.loginButton.disabled = true;
+      }
+    }, 1400);
+
+    // ============================================================================
+    // ACTIVITY TRACKING
+    // ============================================================================
+
+    let activityTimer;
+    const trackActivity = () => {
+      clearTimeout(activityTimer);
+      activityTimer = setTimeout(() => {
+        const sessionCheck = PersistentSessionManager.isValidSession();
+        if (sessionCheck.isValid) {
+          PersistentSessionManager.updateLastActivity(sessionCheck.storage);
+          
+          if (PersistentSessionManager.needsRefresh()) {
+            PersistentSessionManager.extendSession();
+          }
+        }
+      }, 1000);
+    };
+
+    ['mousedown', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+      document.addEventListener(event, trackActivity, true);
+    });
+
+    // Session heartbeat
+    setInterval(() => {
+      const sessionCheck = PersistentSessionManager.isValidSession();
+      if (sessionCheck.isValid) {
+        const storage = sessionCheck.storage === 'localStorage' ? localStorage : sessionStorage;
+        const lastActivity = parseInt(storage.getItem('lastActivity'));
+        const fiveMinutesAgo = Date.now() - (5 * 60 * 1000);
+        
+        if (lastActivity > fiveMinutesAgo) {
+          PersistentSessionManager.extendSession();
+        }
+      }
+    }, 5 * 60 * 1000);
+
+    // ============================================================================
+    // LOGO ERROR HANDLING
+    // ============================================================================
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const logos = document.querySelectorAll('.college-logo-img, .loading-logo img');
+      
+      logos.forEach(img => {
+        if (img) {
+          img.addEventListener('error', function() {
+            this.style.display = 'none';
+            const fallback = this.parentElement?.querySelector('.logo-fallback, .college-logo-fallback');
+            if (fallback) fallback.style.opacity = '1';
+          });
+        }
+      });
+    });
+
+    // ============================================================================
+    // DEV TOOLS (LOCALHOST ONLY)
+    // ============================================================================
+
+    if (window.location.hostname === 'localhost') {
+      window.PersistentSessionManager = PersistentSessionManager;
+      window.getSessionInfo = () => PersistentSessionManager.getSessionInfo();
+      window.clearAllSessions = () => PersistentSessionManager.clearAllSessions();
+      console.log('🔧 Dev tools: getSessionInfo(), clearAllSessions()');
+    }
+
+</script>
+
+
+</body>
+</html>

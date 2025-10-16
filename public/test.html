@@ -1,0 +1,3301 @@
+// Test if JavaScript is working
+console.log('🚀 JavaScript loaded successfully');
+
+// Enhanced Toggle Menu Function - Handle menu, backdrop, and hamburger animation
+
+  // 🔧 Fixed Menu Toggle Function
+  function toggleMenu() {
+    console.log('🔄 toggleMenu called');
+    
+    // Get elements with fallback
+    const menu = document.getElementById("mobileMenu");
+    const backdrop = document.getElementById("menuBackdrop");
+    const menuIcon = document.querySelector('.menu-icon');
+    
+    console.log('📱 Elements found:', {
+      menu: !!menu,
+      backdrop: !!backdrop,
+      menuIcon: !!menuIcon
+    });
+    
+    // Error handling
+    if (!menu) {
+      console.error('❌ mobileMenu element not found!');
+      return;
+    }
+    
+    if (!backdrop) {
+      console.error('❌ menuBackdrop element not found!');
+      return;
+    }
+    
+    // Check current state more reliably
+    const isHidden = menu.classList.contains('hidden') || 
+                    getComputedStyle(menu).transform.includes('-264px') || 
+                    getComputedStyle(menu).transform === 'translateX(-100%)';
+    
+    console.log('📱 Current state:', {
+      hasHiddenClass: menu.classList.contains('hidden'),
+      hasTranslateClass: menu.classList.contains('-translate-x-full'),
+      computedTransform: getComputedStyle(menu).transform,
+      isHidden: isHidden
+    });
+    
+    if (isHidden) {
+      // 🟢 SHOW MENU
+      console.log('📱 Opening menu...');
+      
+      // Step 1: Remove hidden class first
+      menu.classList.remove('hidden');
+      backdrop.classList.remove('hidden');
+      
+      // Step 2: Force reflow to ensure DOM is updated
+      menu.offsetHeight;
+      
+      // Step 3: Remove transform class with slight delay
+      requestAnimationFrame(() => {
+        menu.classList.remove('-translate-x-full');
+        if (menuIcon) {
+          menuIcon.classList.add('active');
+        }
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        console.log('✅ Menu opened successfully');
+      });
+      
+    } else {
+      // 🔴 HIDE MENU
+      console.log('📱 Closing menu...');
+      
+      // Step 1: Add transform class
+      menu.classList.add('-translate-x-full');
+      backdrop.classList.add('hidden');
+      
+      if (menuIcon) {
+        menuIcon.classList.remove('active');
+      }
+      
+      // Allow body scroll
+      document.body.style.overflow = '';
+      
+      // Step 2: Add hidden class after animation
+      setTimeout(() => {
+        if (menu.classList.contains('-translate-x-full')) {
+          menu.classList.add('hidden');
+          console.log('✅ Menu closed successfully');
+        }
+      }, 350); // Slightly longer than CSS transition
+    }
+  }
+  
+  // 🔧 Enhanced Event Listeners
+  function initializeMenu() {
+    console.log('🚀 Initializing menu system...');
+    
+    // Menu Icon Click
+    const menuIcon = document.querySelector('.menu-icon');
+    if (menuIcon) {
+      // Remove existing listeners to prevent duplicates
+      menuIcon.onclick = null;
+      menuIcon.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('🖱️ Menu icon clicked');
+        toggleMenu();
+      });
+      console.log('✅ Menu icon listener added');
+    } else {
+      console.warn('⚠️ Menu icon not found');
+    }
+    
+    // Close Button Click
+    const closeBtn = document.getElementById('menuCloseBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('❌ Close button clicked');
+        toggleMenu();
+      });
+      console.log('✅ Close button listener added');
+    } else {
+      console.warn('⚠️ Close button not found');
+    }
+    
+    // Backdrop Click
+    const backdrop = document.getElementById('menuBackdrop');
+    if (backdrop) {
+      backdrop.addEventListener('click', function(e) {
+        console.log('🌫️ Backdrop clicked');
+        toggleMenu();
+      });
+      console.log('✅ Backdrop listener added');
+    } else {
+      console.warn('⚠️ Backdrop not found');
+    }
+    
+    // Escape Key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const menu = document.getElementById('mobileMenu');
+        if (menu && !menu.classList.contains('hidden')) {
+          console.log('⌨️ Escape key pressed');
+          toggleMenu();
+        }
+      }
+    });
+    
+    console.log('✅ Menu system initialized successfully');
+  }
+  
+  // 🚀 Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeMenu);
+  } else {
+    initializeMenu();
+  }
+  
+  // 🌐 Make functions globally available
+  window.toggleMenu = toggleMenu;
+  window.initializeMenu = initializeMenu;
+  
+  console.log('✅ Menu script loaded successfully');
+
+  
+
+// Enhanced streams configuration based on your structure - LUXE NOIR Theme
+const streams = [
+{
+  name: "BCA",
+  icon: '<i class="fas fa-laptop-code" style="color: #060D0C;"></i>',
+  color: "bg-gray-100",
+  textColor: "text-gray-800",
+  borderColor: "border-gray-500",
+  luxeColor: "#060D0C"
+},
+{
+  name: "BCA AI & ML",
+  icon: '<i class="fas fa-laptop-code" style="color: #060D0C;"></i>',
+  color: "bg-gray-100",
+  textColor: "text-gray-800",
+  borderColor: "border-gray-500",
+  luxeColor: "#060D0C"
+},
+{
+  name: "BBA",
+  icon: '<i class="fas fa-chart-line" style="color: #2A3B36;"></i>',
+  color: "bg-gray-100",
+  textColor: "text-gray-800",
+  borderColor: "border-gray-500",
+  luxeColor: "#2A3B36"
+},
+{
+  name: "BCOM",  // ✅ FIXED: Changed from "BCom" to "BCOM" for consistency
+  displayName: "BCom",
+  icon: '<i class="fas fa-money-bill-wave" style="color: #060D0C;"></i>',
+  color: "bg-gray-100",
+  textColor: "text-gray-800",
+  borderColor: "border-gray-500",
+  luxeColor: "#060D0C"
+},
+
+// ✅ UPDATED: Section B with all semesters (removed limitedSemesters)
+{
+  name: "BCOM SECTION B",  // ✅ FIXED: Proper naming for backend compatibility
+  displayName: "BCom B",
+  icon: '<i class="fas fa-users" style="color: #1E40AF;"></i>',  // ✅ UPDATED: Better section icon
+  color: "bg-blue-50",     // ✅ UPDATED: Distinct blue theme
+  textColor: "text-blue-800",
+  borderColor: "border-blue-400",
+  // ✅ REMOVED: limitedSemesters - now supports all semesters 1-8
+  luxeColor: "#1E40AF",
+  sectionInfo: {
+    section: "B",
+    collectionPrefix: "bcomsectionb",  // For backend: bcomsectionb_sem5_subjects
+    description: "Section B - All Semesters"
+  }
+},
+
+// ✅ NEW: Section C addition
+{
+  name: "BCOM SECTION C",  // ✅ NEW: Section C support
+  displayName: "BCom C",
+  icon: '<i class="fas fa-user-graduate" style="color: #7C3AED;"></i>',  // ✅ NEW: Purple graduate icon
+  color: "bg-purple-50",   // ✅ NEW: Distinct purple theme
+  textColor: "text-purple-800",
+  borderColor: "border-purple-400",
+  // ✅ NEW: Full semester support (1-8)
+  luxeColor: "#7C3AED",
+  sectionInfo: {
+    section: "C", 
+    collectionPrefix: "bcomsectionc",  // For backend: bcomsectionc_sem5_subjects
+    description: "Section C - All Semesters"
+  }
+},
+
+{
+  name: "BCom-BDA",
+  displayName: "BDA",
+  icon: '<i class="fas fa-chart-bar" style="color: #060D0C;"></i>',
+  color: "bg-gray-100",
+  textColor: "text-gray-800",
+  borderColor: "border-gray-500",
+  luxeColor: "#060D0C"
+},
+{
+  name: "BCom A and F",
+  displayName: "A & F",  // ✅ IMPROVED: Shorter display name
+  icon: '<i class="fas fa-calculator" style="color: #2A3B36;"></i>',
+  color: "bg-gray-100",
+  textColor: "text-gray-800",
+  borderColor: "border-gray-500",
+  luxeColor: "#2A3B36"
+}
+];
+
+
+// Global variables
+let attendanceQueue = [];
+let createdSubjects = [];
+let completedClasses = [];
+let selectedStreamData = null;
+let createSelectedStreamData = null;
+let currentSection = 'todaySection';
+let userData = {
+  userName: 'Teacher',
+  userEmail: 'teacher@school.edu',
+  firebaseUid: null
+};
+
+// Update user data when authenticated
+function updateUserData(user) {
+  if (user) {
+    userData = {
+      userName: user.displayName || user.email?.split('@')[0] || 'Teacher',
+      userEmail: user.email || 'teacher@school.edu',
+      firebaseUid: user.uid
+    };
+  }
+}
+
+// API base URL
+const API_BASE_URL = '/api';
+
+// ============================================================================
+// TEACHER DATABASE FUNCTIONS
+// ============================================================================
+
+// Create or update teacher profile in database
+async function saveTeacherProfile() {
+  try {
+    if (!userData.firebaseUid) {
+      console.log('No Firebase UID available - skipping database teacher profile creation');
+      return { success: true, message: 'Skipped - no Firebase UID' };
+    }
+
+    console.log('Saving teacher profile:', {
+      firebaseUid: userData.firebaseUid,
+      name: userData.userName,
+      email: userData.userEmail
+    });
+
+    if (!userData.firebaseUid || userData.firebaseUid === 'null' || userData.firebaseUid === '') {
+      throw new Error('Invalid Firebase UID: ' + userData.firebaseUid);
+    }
+
+    const response = await fetch(`${API_BASE_URL}/teacher/profile`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        firebaseUid: userData.firebaseUid,
+        name: userData.userName,
+        email: userData.userEmail
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    
+    if (result.success) {
+      console.log('✅ Teacher profile saved successfully:', result.teacher);
+      return result.teacher;
+    } else {
+      console.error('❌ Failed to save teacher profile:', result.message);
+      throw new Error(result.message);
+    }
+  } catch (error) {
+    console.error('❌ Error saving teacher profile:', error);
+    throw error;
+  }
+}
+
+// Get teacher profile from database
+async function getTeacherProfile() {
+  try {
+    let response;
+    
+    if (userData.firebaseUid) {
+      // Use Firebase UID for Firebase authenticated users
+      response = await fetch(`${API_BASE_URL}/teacher/profile/${userData.firebaseUid}`);
+    } else if (userData.userEmail) {
+      // Use email for localStorage authenticated users
+      response = await fetch(`${API_BASE_URL}/teacher/profile/email/${encodeURIComponent(userData.userEmail)}`);
+    } else {
+      console.warn('No identifier available for teacher lookup');
+      return null;
+    }
+
+    const result = await response.json();
+    
+    if (result.success) {
+      return result.teacher;
+    } else {
+      console.log('Teacher profile not found, will create new one');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching teacher profile:', error);
+    return null;
+  }
+}
+
+// Save created subject to database
+async function saveCreatedSubject(subjectData) {
+  try {
+    let apiUrl;
+    
+    if (userData.firebaseUid) {
+      // Use Firebase UID for Firebase authenticated users
+      apiUrl = `${API_BASE_URL}/teacher/${userData.firebaseUid}/subjects`;
+    } else if (userData.userEmail) {
+      // Use email for localStorage authenticated users
+      apiUrl = `${API_BASE_URL}/teacher/email/${encodeURIComponent(userData.userEmail)}/subjects`;
+    } else {
+      console.warn('No identifier available for saving subject');
+      return false;
+    }
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(subjectData)
+    });
+
+    const result = await response.json();
+    
+    if (result.success) {
+      console.log('Subject saved to database successfully');
+      return true;
+    } else {
+      console.error('Failed to save subject:', result.message);
+      return false;
+    }
+  } catch (error) {
+    console.error('Error saving subject:', error);
+    return false;
+  }
+}
+
+// Load teacher's created subjects from database
+async function loadCreatedSubjects() {
+  try {
+    const teacher = await getTeacherProfile();
+    if (teacher && teacher.createdSubjects) {
+      return teacher.createdSubjects;
+    }
+    return [];
+  } catch (error) {
+    console.error('Error loading created subjects:', error);
+    return [];
+  }
+}
+
+// Initialize teacher in database
+async function initializeTeacherInDatabase() {
+  try {
+    // Save/update teacher profile
+    const teacherProfile = await saveTeacherProfile();
+    
+    // Check if we have a valid teacher profile or if we're continuing offline
+    if (!teacherProfile || typeof teacherProfile === 'string') {
+      console.log('Database initialization skipped - continuing offline');
+      return true; // Continue without database operations
+    }
+    
+    // Load any existing created subjects only if we have a valid profile
+    if (userData.firebaseUid) {
+      const createdSubjects = await loadCreatedSubjects();
+      console.log(`Loaded ${createdSubjects.length} created subjects`);
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error initializing teacher in database:', error);
+    // Don't throw error - continue offline
+    console.log('Database connection issue (continuing offline)');
+    return true;
+  }
+}
+
+// DOM Elements
+const elements = {
+  homePage: document.getElementById('homePage'),
+  addClassPage: document.getElementById('addClassPage'),
+  backButtonHome: document.getElementById('backButtonHome'),
+  backButtonForm: document.getElementById('backButtonForm'),
+  streamContainer: document.getElementById('streamContainer'),
+  selectedStream: document.getElementById('selectedStream'),
+  semesterSelect: document.getElementById('semester'),
+  subjectSelect: document.getElementById('subject'),
+  subjectLoader: document.getElementById('subjectLoader'),
+  subjectHelp: document.getElementById('subjectHelp'),
+  addBtn: document.getElementById('addBtn')
+};
+
+// Database API functions (same as before)
+async function saveQueueToDatabase(queueData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/queue`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        teacherId: userData.userName,
+        firebaseUid: userData.firebaseUid,
+        queueData: queueData,
+        timestamp: new Date().toISOString()
+      })
+    });
+
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const result = await response.json();
+    
+    if (result.success) {
+      console.log('💾 Queue saved to database successfully');
+      return result;
+    } else {
+      throw new Error(result.message || 'Failed to save queue');
+    }
+  } catch (error) {
+    console.error('Error saving to database:', error);
+    localStorage.setItem('attendanceQueue', JSON.stringify(queueData));
+    showNotification('Saved locally (database error)', 'warning');
+    return null;
+  }
+}
+
+async function loadQueueFromDatabase() {
+  try {
+    const identifier = userData.firebaseUid || userData.userName;
+    const response = await fetch(`${API_BASE_URL}/queue/${identifier}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.log('Teacher not found in database, initializing empty queue');
+        attendanceQueue = [];
+        return { queueData: [] };
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    if (result.success) {
+      attendanceQueue = result.queueData || [];
+      console.log(`📥 Loaded ${attendanceQueue.length} items from database`);
+      
+      // Update localStorage with database data
+      localStorage.setItem('attendanceQueue', JSON.stringify(attendanceQueue));
+      
+      return result;
+    } else {
+      throw new Error(result.message || 'Failed to load queue');
+    }
+  } catch (error) {
+    console.error('Error loading from database:', error);
+    throw error; // Re-throw to trigger fallback in calling function
+  }
+}
+
+async function deleteQueueItemFromDatabase(itemId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/queue/item/${itemId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        teacherId: userData.userName,
+        firebaseUid: userData.firebaseUid
+      })
+    });
+
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const result = await response.json();
+    
+    if (result.success) {
+      console.log('🗑️ Queue item deleted from database successfully');
+      return result;
+    } else {
+      throw new Error(result.message || 'Failed to delete queue item');
+    }
+  } catch (error) {
+    console.error('Error deleting from database:', error);
+    return null;
+  }
+}
+
+// Create stream selection dropdown options
+function createStreamCards() {
+  // Populate Add Class form stream dropdown
+  const streamContainer = document.getElementById('streamContainer');
+  if (streamContainer) {
+    streamContainer.innerHTML = '<option value="">Select stream</option>';
+    streams.forEach(stream => {
+      const option = document.createElement('option');
+      option.value = stream.name;
+      option.textContent = stream.displayName || stream.name;
+      if (stream.limitedSemesters) {
+        option.textContent += ` (Sem ${stream.limitedSemesters.join(', ')} only)`;
+      }
+      streamContainer.appendChild(option);
+    });
+    
+    // Add change event listener
+    streamContainer.addEventListener('change', function() {
+      selectStream(this.value);
+    });
+  }
+
+  // Populate Create Subject form stream dropdown
+  const createStreamContainer = document.getElementById('createStreamContainer');
+  if (createStreamContainer) {
+    createStreamContainer.innerHTML = '<option value="">Select stream</option>';
+    streams.forEach(stream => {
+      const option = document.createElement('option');
+      option.value = stream.name;
+      option.textContent = stream.displayName || stream.name;
+      if (stream.limitedSemesters) {
+        option.textContent += ` (Sem ${stream.limitedSemesters.join(', ')} only)`;
+      }
+      createStreamContainer.appendChild(option);
+    });
+    
+    // Add change event listener
+    createStreamContainer.addEventListener('change', function() {
+      selectCreateStream(this.value);
+    });
+  }
+}
+
+// ✅ FIXED: Select stream function with enhanced validation
+function selectStream(streamName) {
+console.log(`🎯 Selecting stream: ${streamName}`);
+
+if (!streamName) {
+// Reset if no stream selected
+selectedStreamData = null;
+elements.selectedStream.value = '';
+elements.semesterSelect.innerHTML = '<option value="">Select stream first</option>';
+elements.subjectSelect.innerHTML = '<option value="">Select stream first</option>';
+elements.subjectSelect.disabled = true;
+elements.addBtn.disabled = true;
+return;
+}
+
+// ✅ ENHANCED: Find selected stream data with validation
+const streamData = streams.find(s => s.name === streamName);
+
+if (!streamData) {
+console.error(`❌ Stream not found: ${streamName}`);
+showNotification(`Stream "${streamName}" not found`, 'error');
+return;
+}
+
+// Update selected stream
+selectedStreamData = streamData;
+elements.selectedStream.value = streamName;
+
+console.log(`✅ Stream selected:`, streamData);
+
+// Update semesters based on selection
+updateSemesters();
+
+// Reset subject selection
+elements.subjectSelect.innerHTML = '<option value="">Select semester first</option>';
+elements.subjectSelect.disabled = true;
+elements.addBtn.disabled = true;
+
+// Show success message
+showNotification(`Selected: ${streamData.displayName || streamName}`, 'success');
+}
+
+// ✅ FIXED: Update semester options with proper validation
+function updateSemesters() {
+console.log('📚 Updating semesters for:', selectedStreamData);
+
+const semesterSelect = elements.semesterSelect;
+
+if (!semesterSelect) {
+console.error('❌ Semester select element not found');
+return;
+}
+
+// Clear existing options
+semesterSelect.innerHTML = '<option value="">Select semester</option>';
+
+if (!selectedStreamData) {
+console.warn('⚠️ No stream data selected');
+return;
+}
+
+try {
+if (selectedStreamData.limitedSemesters && selectedStreamData.limitedSemesters.length > 0) {
+  // ✅ LIMITED SEMESTERS: Add only specified semesters
+  console.log(`📋 Adding limited semesters:`, selectedStreamData.limitedSemesters);
+  
+  selectedStreamData.limitedSemesters.forEach(sem => {
+    const option = document.createElement('option');
+    option.value = sem;
+    option.textContent = `Semester ${sem}`;
+    semesterSelect.appendChild(option);
+  });
+  
+  // Show limitation info
+  showNotification(`${selectedStreamData.displayName || selectedStreamData.name} - Limited to semesters: ${selectedStreamData.limitedSemesters.join(', ')}`, 'info');
+  
+} else {
+  // ✅ ALL SEMESTERS: Add full range (1-8, but display up to 6 for most cases)
+  const maxSemesters = getMaxSemestersForStream(selectedStreamData.name);
+  console.log(`📋 Adding all semesters (1-${maxSemesters})`);
+  
+  for (let i = 1; i <= maxSemesters; i++) {
+    const option = document.createElement('option');
+    option.value = i;
+    option.textContent = `Semester ${i}`;
+    semesterSelect.appendChild(option);
+  }
+  
+  // Show full support info
+  showNotification(`${selectedStreamData.displayName || selectedStreamData.name} - All semesters available`, 'success');
+}
+
+// Enable semester selection
+semesterSelect.disabled = false;
+
+} catch (error) {
+console.error('❌ Error updating semesters:', error);
+showNotification('Error updating semesters', 'error');
+
+// Fallback: Add default semesters
+for (let i = 1; i <= 6; i++) {
+  const option = document.createElement('option');
+  option.value = i;
+  option.textContent = `Semester ${i}`;
+  semesterSelect.appendChild(option);
+}
+}
+}
+
+// ✅ NEW: Get maximum semesters for a stream
+function getMaxSemestersForStream(streamName) {
+// Define max semesters per stream
+const maxSemestersByStream = {
+'BCA': 6,
+'BBA': 6,
+'BCOM': 6,
+'BCom': 6,
+
+'BCom-BDA': 6,
+'BCom A and F': 6,
+'BDA': 6
+};
+
+return maxSemestersByStream[streamName] || 6; // Default to 6
+}
+
+// ✅ ENHANCED: Reset form with proper cleanup
+function resetForm() {
+console.log('🔄 Resetting form...');
+
+try {
+// Reset stream selection
+if (elements.streamContainer) {
+  // Clear any active stream selections
+  const activeCards = elements.streamContainer.querySelectorAll('.stream-card.active');
+  activeCards.forEach(card => card.classList.remove('active'));
+}
+
+// Reset form elements with validation
+if (elements.selectedStream) {
+  elements.selectedStream.value = '';
+}
+
+if (elements.semesterSelect) {
+  elements.semesterSelect.innerHTML = '<option value="">Select stream first</option>';
+  elements.semesterSelect.disabled = false; // Keep enabled for better UX
+}
+
+if (elements.subjectSelect) {
+  elements.subjectSelect.innerHTML = '<option value="">Select stream first</option>';
+  elements.subjectSelect.disabled = true;
+}
+
+if (elements.addBtn) {
+  elements.addBtn.disabled = true;
+}
+
+// Reset global variables
+selectedStreamData = null;
+
+console.log('✅ Form reset completed');
+showNotification('Form reset', 'info');
+
+} catch (error) {
+console.error('❌ Error resetting form:', error);
+showNotification('Error resetting form', 'error');
+}
+}
+
+// ✅ ENHANCED: Check new day with better date handling
+function checkNewDay() {
+try {
+const today = new Date().toDateString();
+const lastClear = localStorage.getItem('lastClearDate');
+
+console.log(`📅 Checking new day: ${today} vs ${lastClear}`);
+
+if (lastClear !== today) {
+  console.log('🆕 New day detected, updating localStorage');
+  localStorage.setItem('lastClearDate', today);
+  
+  // Optional: Clear any day-specific data
+  clearDaySpecificData();
+  
+  showNotification('New day started!', 'info');
+}
+} catch (error) {
+console.error('❌ Error checking new day:', error);
+}
+}
+
+// ✅ NEW: Clear day-specific data
+function clearDaySpecificData() {
+try {
+// Clear any attendance queues or temporary data
+const keysToRemove = [];
+for (let i = 0; i < localStorage.length; i++) {
+  const key = localStorage.key(i);
+  if (key && key.includes('attendance_') || key.includes('temp_')) {
+    keysToRemove.push(key);
+  }
+}
+
+keysToRemove.forEach(key => localStorage.removeItem(key));
+console.log(`🧹 Cleared ${keysToRemove.length} day-specific items`);
+} catch (error) {
+console.error('❌ Error clearing day-specific data:', error);
+}
+}
+
+// ✅ FIXED: Section management with enhanced error handling
+function showSection(sectionId) {
+console.log(`📋 Showing section: ${sectionId}`);
+
+try {
+if (!sectionId) {
+  console.error('❌ No section ID provided');
+  return;
+}
+
+// ✅ VALIDATION: Check if section exists
+const targetSection = document.getElementById(sectionId);
+if (!targetSection) {
+  console.error(`❌ Section not found: ${sectionId}`);
+  showNotification(`Section "${sectionId}" not found`, 'error');
+  return;
+}
+
+// Hide all sections
+const allSections = document.querySelectorAll('.section-content');
+allSections.forEach(section => {
+  section.classList.add('hidden');
+});
+
+// Show selected section
+targetSection.classList.remove('hidden');
+currentSection = sectionId;
+
+console.log(`✅ Section shown: ${sectionId}`);
+
+// ✅ ENHANCED: Reset all tab buttons with validation
+const tabButtons = document.querySelectorAll('#todayTab, #subjectsTab, #completedTab');
+
+tabButtons.forEach(tab => {
+  if (tab) {
+    tab.style.background = 'transparent';
+    tab.style.color = '#49769F';
+    tab.style.boxShadow = 'none';
+  }
+});
+
+// ✅ ENHANCED: Highlight active tab with proper mapping
+const activeTabMap = {
+  'todaySection': 'todayTab',
+  'subjectsSection': 'subjectsTab', 
+  'completedSection': 'completedTab'
+};
+
+const activeTabId = activeTabMap[sectionId];
+const activeTab = document.getElementById(activeTabId);
+
+if (activeTab) {
+  activeTab.style.background = 'linear-gradient(135deg, #0A4174, #49769F)';
+  activeTab.style.color = 'white';
+  activeTab.style.boxShadow = '0 2px 8px rgba(10, 65, 116, 0.3)';
+  console.log(`✅ Active tab highlighted: ${activeTabId}`);
+} else {
+  console.warn(`⚠️ Active tab not found: ${activeTabId}`);
+}
+
+// ✅ ENHANCED: Update displays with error handling
+try {
+  switch (sectionId) {
+    case 'todaySection':
+      if (typeof updateQueueDisplay === 'function') {
+        updateQueueDisplay();
+      } else {
+        console.warn('⚠️ updateQueueDisplay function not found');
+      }
+      break;
+      
+    case 'subjectsSection':
+      if (typeof updateSubjectsDisplay === 'function') {
+        updateSubjectsDisplay();
+      } else {
+        console.warn('⚠️ updateSubjectsDisplay function not found');
+      }
+      break;
+      
+    case 'completedSection':
+      if (typeof updateCompletedDisplay === 'function') {
+        updateCompletedDisplay();
+      } else {
+        console.warn('⚠️ updateCompletedDisplay function not found');
+      }
+      break;
+      
+    default:
+      console.log(`📋 Section "${sectionId}" shown without specific update function`);
+  }
+} catch (displayError) {
+  console.error(`❌ Error updating display for ${sectionId}:`, displayError);
+  showNotification(`Error updating ${sectionId} display`, 'error');
+}
+
+} catch (error) {
+console.error('❌ Error showing section:', error);
+showNotification('Error switching sections', 'error');
+}
+}
+
+// ✅ NEW: Notification system for better user feedback
+function showNotification(message, type = 'info') {
+console.log(`📢 Notification (${type}): ${message}`);
+
+// Create notification element if it doesn't exist
+let notification = document.getElementById('notification');
+if (!notification) {
+notification = document.createElement('div');
+notification.id = 'notification';
+notification.style.cssText = `
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  z-index: 9999;
+  transition: all 0.3s ease;
+  transform: translateX(100%);
+`;
+document.body.appendChild(notification);
+}
+
+// Set notification style based on type
+const styles = {
+success: 'background: #4CAF50;',
+error: 'background: #E63946;',
+warning: 'background: #FF9800;',
+info: 'background: #2196F3;'
+};
+
+notification.style.background = styles[type] || styles.info;
+notification.textContent = message;
+
+// Show notification
+notification.style.transform = 'translateX(0)';
+
+// Auto-hide after 3 seconds
+setTimeout(() => {
+notification.style.transform = 'translateX(100%)';
+}, 3000);
+}
+
+// ✅ NEW: Validate stream and semester combination
+function validateStreamSemester(streamName, semester) {
+const streamData = streams.find(s => s.name === streamName);
+if (!streamData) {
+return { valid: false, error: `Stream "${streamName}" not found` };
+}
+
+if (streamData.limitedSemesters) {
+if (!streamData.limitedSemesters.includes(parseInt(semester))) {
+  return { 
+    valid: false, 
+    error: `${streamData.displayName || streamName} only supports semesters: ${streamData.limitedSemesters.join(', ')}` 
+  };
+}
+}
+
+const sem = parseInt(semester);
+const maxSem = getMaxSemestersForStream(streamName);
+if (sem < 1 || sem > maxSem) {
+return { 
+  valid: false, 
+  error: `Semester must be between 1 and ${maxSem} for ${streamData.displayName || streamName}` 
+};
+}
+
+return { valid: true };
+}
+
+// ✅ NEW: Initialize form elements with error handling
+function initializeFormElements() {
+try {
+// Ensure all required elements exist
+const requiredElements = ['selectedStream', 'semesterSelect', 'subjectSelect', 'addBtn'];
+
+requiredElements.forEach(elementId => {
+  if (!elements[elementId]) {
+    console.warn(`⚠️ Element not found: ${elementId}`);
+  }
+});
+
+// Set up event listeners
+if (elements.semesterSelect) {
+  elements.semesterSelect.addEventListener('change', function() {
+    const streamName = elements.selectedStream?.value;
+    const semester = this.value;
+    
+    if (streamName && semester) {
+      const validation = validateStreamSemester(streamName, semester);
+      if (!validation.valid) {
+        showNotification(validation.error, 'error');
+        this.value = '';
+        return;
+      }
+    }
+  });
+}
+
+console.log('✅ Form elements initialized');
+
+} catch (error) {
+console.error('❌ Error initializing form elements:', error);
+}
+}
+
+// ✅ CALL INITIALIZATION: Run when DOM is ready
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', initializeFormElements);
+} else {
+initializeFormElements();
+}
+
+
+// Page navigation
+function showHomePage() {
+  elements.homePage.classList.remove('hidden');
+  elements.addClassPage.classList.add('hidden');
+  
+  const createSubjectPage = document.getElementById('createSubjectPage');
+  if (createSubjectPage) {
+    createSubjectPage.classList.add('hidden');
+  }
+  
+  elements.backButtonHome.classList.remove('hidden');
+  elements.backButtonForm.classList.add('hidden');
+  elements.homePage.classList.add('slide-in');
+  showSection(currentSection);
+}
+
+function showAddClassForm() {
+  elements.homePage.classList.add('hidden');
+  elements.addClassPage.classList.remove('hidden');
+  
+  const createSubjectPage = document.getElementById('createSubjectPage');
+  if (createSubjectPage) {
+    createSubjectPage.classList.add('hidden');
+  }
+  
+  elements.backButtonHome.classList.add('hidden');
+  elements.backButtonForm.classList.remove('hidden');
+  elements.addClassPage.classList.add('slide-in');
+  resetForm();
+}
+
+function showCreateSubjectForm() {
+  elements.homePage.classList.add('hidden');
+  elements.addClassPage.classList.add('hidden');
+  
+  const createSubjectPage = document.getElementById('createSubjectPage');
+  if (createSubjectPage) {
+    createSubjectPage.classList.remove('hidden');
+    createSubjectPage.classList.add('slide-in');
+  } else {
+    console.error('❌ createSubjectPage element not found!');
+    return;
+  }
+  
+  elements.backButtonHome.classList.add('hidden');
+  elements.backButtonForm.classList.remove('hidden');
+  resetCreateForm();
+  createStreamCards();
+}
+
+function cancelCreateSubject() {
+  showHomePage();
+}
+
+// ============================================================================
+// DISPLAY FUNCTIONS
+// ============================================================================
+function updateQueueDisplay() {
+  const emptyQueuePrompt = document.getElementById('emptyQueuePrompt');
+  const queueList = document.getElementById('queueList');
+
+  if (!emptyQueuePrompt || !queueList) {
+    console.warn('Queue DOM elements not found, retrying...');
+    setTimeout(updateQueueDisplay, 100);
+    return;
+  }
+
+  document.getElementById('queueCount').textContent = attendanceQueue.length;
+
+  if (attendanceQueue.length === 0) {
+    emptyQueuePrompt.classList.remove('hidden');
+    queueList.innerHTML = '';
+  } else {
+    emptyQueuePrompt.classList.add('hidden');
+    
+    queueList.innerHTML = attendanceQueue.map((item, index) => {
+      const streamData = streams.find(s => s.name === item.stream) || streams[0];
+      return `
+        <div class="queue-item rounded-2xl border-l-4 p-4 shadow-lg transition-all duration-300 hover:shadow-xl" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(189, 216, 233, 0.4); border-left-color: #7BBDE8;" data-id="${item.id}">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 shadow-sm" style="background: rgba(123, 189, 232, 0.15);">
+                <span class="font-bold text-sm" style="color: #0A4174;">${index + 1}</span>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center mb-2">
+                  <div class="w-6 h-6 rounded mr-2 flex items-center justify-center shadow-sm" style="background: linear-gradient(135deg, #4E8EA2, #6EA2B3);">
+                    <i class="fas fa-book text-xs text-white"></i>
+                  </div>
+                  <h3 class="font-bold" style="color: #001D39;">${item.subject}</h3>
+                </div>
+                <div class="flex flex-wrap gap-1 mb-2">
+                  <span class="px-2 py-1 rounded-lg text-xs font-semibold text-white shadow-sm" style="background: linear-gradient(135deg, #0A4174, #49769F);">${streamData.displayName || item.stream}</span>
+                  <span class="px-2 py-1 rounded-lg text-xs font-semibold" style="background: rgba(123, 189, 232, 0.15); color: #0A4174;">Sem ${item.semester}</span>
+                </div>
+                <p class="text-xs font-medium" style="color: #66BB6A;">Added: ${item.timeAdded}</p>
+              </div>
+            </div>
+            
+            <!-- Remove button -->
+            <button onclick="removeFromQueue(${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110" style="color: #FF9800; background: rgba(255, 152, 0, 0.1); border: 1px solid rgba(255, 152, 0, 0.2);" title="Remove from queue">
+              <i class="fas fa-times text-xs"></i>
+            </button>
+          </div>
+          
+          <div class="flex space-x-2">
+            <button onclick="takeAttendance(${item.id})" class="w-full text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:scale-[1.02]" style="background: linear-gradient(135deg, #0A4174, #49769F);">
+              <i class="fas fa-user-check mr-2"></i>
+              Take Attendance
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+// Simple remove from queue function - no confirmation
+function removeFromQueue(itemId) {
+  const item = attendanceQueue.find(q => q.id === itemId);
+  if (!item) return;
+
+  // Remove from queue
+  attendanceQueue = attendanceQueue.filter(q => q.id !== itemId);
+  
+  // Save to localStorage
+  localStorage.setItem('attendanceQueue', JSON.stringify(attendanceQueue));
+  
+  // Try to save to database
+  try {
+    saveQueueToDatabase(attendanceQueue);
+  } catch (error) {
+    console.log('Database save failed, using localStorage');
+  }
+
+  // Show orange notification
+  showOrangeNotification('Removed from queue');
+  
+  // Update display
+  updateQueueDisplay();
+  updateSubjectsDisplay(); // Refresh subjects to show updated button states
+}
+
+// Orange notification function
+function showOrangeNotification(message) {
+  const existing = document.getElementById('blueNotify');
+  if (existing) existing.remove();
+
+  const notification = document.createElement('div');
+  notification.id = 'blueNotify';
+  
+  notification.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #FF9800, #FFB74D);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 152, 0, 0.4);
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+    white-space: nowrap;
+    box-shadow: 0 8px 25px rgba(255, 152, 0, 0.3);
+    animation: centerPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  `;
+
+  notification.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <i class="fas fa-minus-circle" style="color: white; font-size: 14px;"></i>
+      <span>${message}</span>
+    </div>
+  `;
+
+  document.body.appendChild(notification);
+
+  // Auto remove after 2.5 seconds
+  setTimeout(() => {
+    if (notification.parentElement) {
+      notification.style.animation = 'centerFade 0.3s ease-out forwards';
+      setTimeout(() => notification.remove(), 300);
+    }
+  }, 2500);
+}
+
+
+function updateSubjectsDisplay() {
+  const emptySubjectsPrompt = document.getElementById('emptySubjectsPrompt');
+  const subjectsList = document.getElementById('subjectsList');
+
+  if (!emptySubjectsPrompt || !subjectsList) {
+    console.warn('Subjects DOM elements not found');
+    return;
+  }
+
+  if (createdSubjects.length === 0) {
+    emptySubjectsPrompt.classList.remove('hidden');
+    subjectsList.innerHTML = '';
+  } else {
+    emptySubjectsPrompt.classList.add('hidden');
+    
+    subjectsList.innerHTML = createdSubjects.map(subject => {
+      const streamData = streams.find(s => s.name === subject.stream) || streams[0];
+      return `
+        <div class="rounded-2xl border-l-4 p-4 shadow-lg transition-all duration-300 hover:shadow-xl" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(189, 216, 233, 0.4); border-left-color: #7BBDE8;" data-subject-id="${subject.id}">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-start flex-1">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 shadow-sm" style="background: linear-gradient(135deg, #4E8EA2, #6EA2B3);">
+                <i class="fas fa-book text-xs text-white"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="font-bold mb-1" style="color: #001D39;">${subject.subjectName}</h3>
+                ${subject.subjectCode ? `<p class="text-xs font-medium mb-2" style="color: #49769F;">${subject.subjectCode}</p>` : ''}
+                <div class="flex flex-wrap gap-1">
+                  <span class="px-2 py-1 rounded-lg text-xs font-semibold text-white shadow-sm" style="background: linear-gradient(135deg, #0A4174, #49769F);">${streamData.displayName || subject.stream}</span>
+                  <span class="px-2 py-1 rounded-lg text-xs font-semibold" style="background: rgba(123, 189, 232, 0.15); color: #0A4174;">Sem ${subject.semester}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex space-x-2">
+            <button onclick="addSubjectToQueue('${subject.id}')" class="flex-1 text-white px-3 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-[1.02] shadow-md" style="background: linear-gradient(135deg, #0A4174, #49769F);">
+              <i class="fas fa-plus mr-2"></i>Add to Queue
+            </button>
+            <button onclick="deleteSubject('${subject.id}')" class="px-3 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-105" style="color: #EF5350; border: 1px solid rgba(239, 83, 80, 0.3); background: rgba(239, 83, 80, 0.1);">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+function updateCompletedDisplay() {
+const emptyCompletedPrompt = document.getElementById('emptyCompletedPrompt');
+const completedList = document.getElementById('completedList');
+
+if (!emptyCompletedPrompt || !completedList) {
+    console.warn('Completed DOM elements not found');
+    return;
+}
+
+document.getElementById('completedCount').textContent = completedClasses.length;
+
+if (completedClasses.length === 0) {
+    emptyCompletedPrompt.classList.remove('hidden');
+    completedList.innerHTML = '';
+} else {
+    emptyCompletedPrompt.classList.add('hidden');
+    
+    // Sort by completion time - most recent first (stack order)
+    const sortedClasses = [...completedClasses].sort((a, b) => {
+        // Sort by timestamp if available, otherwise by id or array position
+        if (a.timestamp && b.timestamp) {
+            return b.timestamp - a.timestamp; // Most recent first
+        }
+        // Fallback to id comparison (higher id = more recent)
+        return (b.id || 0) - (a.id || 0);
+    });
+    
+    completedList.innerHTML = sortedClasses.map((item, index) => {
+        const streamData = streams.find(s => s.name === item.stream) || streams[0];
+        
+        // Smart period calculation based on 30-minute threshold
+        const formatTimeAsPeriod = (timeString) => {
+            try {
+                let time = timeString;
+                if (time.includes('at ')) {
+                    time = time.split('at ')[1]; // Extract time if it has "at" prefix
+                }
+                
+                const timeMatch = time.match(/(\d{1,2}):(\d{2})/);
+                if (timeMatch) {
+                    const hour = parseInt(timeMatch[1]);
+                    const minute = parseInt(timeMatch[2]);
+                    
+                    let startHour, startMinute;
+                    
+                    // If minutes <= 30, start from the hour, else start from 30 minutes
+                    if (minute <= 30) {
+                        startHour = hour;
+                        startMinute = 0;
+                    } else {
+                        startHour = hour;
+                        startMinute = 30;
+                    }
+                    
+                    // Calculate end time (1 hour later)
+                    let endHour = startHour;
+                    let endMinute = startMinute + 60;
+                    
+                    if (endMinute >= 60) {
+                        endMinute -= 60;
+                        endHour += 1;
+                    }
+                    
+                    // Format with AM/PM
+                    const formatTime = (h, m) => {
+                        const period = h >= 12 ? 'PM' : 'AM';
+                        const displayHour = h === 0 ? 12 : h > 12 ? h - 12 : h;
+                        const displayMinute = m.toString().padStart(2, '0');
+                        return `${displayHour}:${displayMinute} ${period}`;
+                    };
+                    
+                    return `${formatTime(startHour, startMinute)} - ${formatTime(endHour, endMinute)}`;
+                }
+            } catch (error) {
+                console.warn('Error formatting time:', error);
+            }
+            
+            return timeString; // Fallback to original time
+        };
+
+        // 📅 FORMAT DATE DISPLAY
+        const formatCompletedDate = (item) => {
+            try {
+                // Try to extract date from timestamp or completedTime
+                let dateToFormat = null;
+                
+                if (item.timestamp) {
+                    dateToFormat = new Date(item.timestamp);
+                } else if (item.completedDate) {
+                    dateToFormat = new Date(item.completedDate);
+                } else if (item.completedTime && item.completedTime.includes('at ')) {
+                    // Extract date if completedTime has format "Sep 19, 2025 at 2:30 PM"
+                    const datePart = item.completedTime.split(' at ')[0];
+                    dateToFormat = new Date(datePart);
+                } else {
+                    // Default to today if no date info available
+                    dateToFormat = new Date();
+                }
+                
+                // Check if date is valid
+                if (isNaN(dateToFormat.getTime())) {
+                    dateToFormat = new Date();
+                }
+                
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                // Format based on relative time
+                if (dateToFormat.toDateString() === today.toDateString()) {
+                    return 'Today';
+                } else if (dateToFormat.toDateString() === yesterday.toDateString()) {
+                    return 'Yesterday';
+                } else {
+                    // Format as "Sep 19" or "Sep 19, 2024" if different year
+                    const options = { month: 'short', day: 'numeric' };
+                    if (dateToFormat.getFullYear() !== today.getFullYear()) {
+                        options.year = 'numeric';
+                    }
+                    return dateToFormat.toLocaleDateString('en-US', options);
+                }
+            } catch (error) {
+                console.warn('Error formatting date:', error);
+                return 'Today';
+            }
+        };
+
+        // Add "recent" indicator for the first item
+        const recentBadge = index === 0 ? `
+            <div class="absolute top-2 right-2">
+            </div>
+        ` : '';
+
+        // ✅ GENERATE UNIQUE VIEW URL PARAMETERS
+        const generateViewUrl = (item) => {
+            const params = new URLSearchParams({
+                subject: item.subject || '',
+                stream: item.stream || '',
+                semester: item.semester || '',
+                date: item.attendanceDate || new Date().toISOString().split('T')[0], // Use today if no date
+                timestamp: item.timestamp || Date.now(),
+                source: 'completed'
+            });
+            
+            return `view-attendance.html?${params.toString()}`;
+        };
+
+        return `
+            <div class="relative rounded-xl p-4 shadow-md transition-all duration-300 hover:shadow-lg group" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(129, 199, 132, 0.05)); border-left: 4px solid #4CAF50; border: 1px solid rgba(76, 175, 80, 0.2);">
+                ${recentBadge}
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 shadow-sm" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(129, 199, 132, 0.3));">
+                        <i class="fas fa-check text-sm" style="color: #4CAF50;"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-1">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 rounded mr-2 flex items-center justify-center shadow-sm" style="background: linear-gradient(135deg, #4E8EA2, #6EA2B3);">
+                                    <i class="fas fa-book text-xs text-white"></i>
+                                </div>
+                                <h4 class="font-bold text-sm" style="color: #001D39;">${item.subject}</h4>
+                            </div>
+                            <span class="text-xs font-medium" style="color: #7BBDE8;">
+                                <i class="fas fa-calendar-alt mr-1"></i>
+                                ${formatCompletedDate(item)}
+                            </span>
+                        </div>
+                        <p class="text-xs font-medium mb-2" style="color: #49769F;">${streamData.displayName || item.stream} • Sem ${item.semester}</p>
+                        <div class="flex items-center justify-between">
+                            <p class="text-xs font-semibold" style="color: #4CAF50;">
+                                <i class="fas fa-clock mr-1"></i>
+                                Period: ${formatTimeAsPeriod(item.completedTime)}
+                            </p>
+                            
+                            <!-- ✅ VIEW ATTENDANCE BUTTON -->
+                            <button 
+                                onclick="viewCompletedAttendance('${item.subject}', '${item.stream}', '${item.semester}', '${item.attendanceDate || new Date().toISOString().split('T')[0]}', ${item.timestamp || Date.now()})"
+                                class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 transform hover:scale-105 opacity-0 group-hover:opacity-100 shadow-sm"
+                                style="background: linear-gradient(135deg, #1e3a8a, #0f766e); color: white; border: 1px solid rgba(15, 118, 110, 0.3);"
+                                title="View attendance register for this class">
+                                <i class="fas fa-eye text-xs mr-1.5"></i>
+                                View 
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+}
+
+// ✅ ENHANCED FUNCTION: Handle viewing completed attendance
+function viewCompletedAttendance(subject, stream, semester, date, timestamp) {
+try {
+  console.log('🎯 Opening view for:', { subject, stream, semester, date });
+  
+  // ✅ CLEAN PARAMETERS (remove quotes/escape characters)
+  const cleanSubject = String(subject || '').replace(/['"]/g, '');
+  const cleanStream = String(stream || '').replace(/['"]/g, '');
+  const cleanSemester = String(semester || '').replace(/['"]/g, '');
+  const cleanDate = String(date || new Date().toISOString().split('T')[0]).replace(/['"]/g, '');
+  const cleanTimestamp = String(timestamp || Date.now());
+
+  // ✅ STORE CONTEXT IN SESSIONSTORAGE
+  const attendanceContext = {
+      subject: cleanSubject,
+      stream: cleanStream, 
+      semester: cleanSemester,
+      date: cleanDate,
+      timestamp: cleanTimestamp,
+      source: 'completed',
+      returnUrl: window.location.href,
+      createdAt: Date.now()
+  };
+  
+  sessionStorage.setItem('attendanceViewContext', JSON.stringify(attendanceContext));
+  
+  // ✅ BUILD CLEAN URL WITH PARAMETERS
+  const params = new URLSearchParams({
+      subject: cleanSubject,
+      stream: cleanStream,
+      semester: cleanSemester,
+      date: cleanDate,
+      source: 'completed',
+      t: Date.now() // Cache buster
+  });
+  
+  const viewUrl = `view-attendance.html?${params.toString()}`;
+  
+  console.log('📋 Redirecting to:', viewUrl);
+  console.log('📊 Stored context:', attendanceContext);
+  
+  // ✅ REDIRECT WITH FEEDBACK
+  showNotification('Opening attendance register...', 'info', 2000);
+  
+  setTimeout(() => {
+      window.location.href = viewUrl;
+  }, 100);
+  
+} catch (error) {
+  console.error('❌ Error viewing attendance:', error);
+  if (typeof showAlert === 'function') {
+      showAlert('Error', 'Failed to open attendance view. Please try again.', 'error');
+  } else {
+      alert('Error: Failed to open attendance view');
+  }
+}
+}
+
+// ✅ UTILITY FUNCTIONS
+function getAttendanceContext() {
+try {
+  const context = sessionStorage.getItem('attendanceViewContext');
+  return context ? JSON.parse(context) : null;
+} catch (error) {
+  console.error('Error getting attendance context:', error);
+  return null;
+}
+}
+
+function clearAttendanceContext() {
+try {
+  sessionStorage.removeItem('attendanceViewContext');
+  console.log('✅ Attendance context cleared');
+} catch (error) {
+  console.error('Error clearing context:', error);
+}
+}
+
+// ✅ ENHANCED BUTTON STYLES
+function addViewButtonStyles() {
+if (document.getElementById('view-button-styles')) return;
+
+const styles = document.createElement('style');
+styles.id = 'view-button-styles';
+styles.textContent = `
+  .attendance-view-btn {
+      background: linear-gradient(135deg, #1e3a8a, #0f766e) !important;
+      color: white !important;
+      border: 1px solid rgba(15, 118, 110, 0.3) !important;
+      transition: all 0.2s ease !important;
+      opacity: 0;
+      transform: translateX(10px);
+  }
+  
+  .group:hover .attendance-view-btn {
+      opacity: 1 !important;
+      transform: translateX(0) !important;
+  }
+  
+  .attendance-view-btn:hover {
+      background: linear-gradient(135deg, #1e40af, #0d9488) !important;
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3) !important;
+      transform: translateY(-2px) !important;
+  }
+  
+  @media (max-width: 768px) {
+      .attendance-view-btn {
+          opacity: 1 !important;
+          transform: translateX(0) !important;
+      }
+  }
+  
+  /* Loading animation */
+  @keyframes pulse-loading {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+  }
+  
+  .loading-pulse {
+      animation: pulse-loading 1.5s ease-in-out infinite;
+  }
+`;
+document.head.appendChild(styles);
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', addViewButtonStyles);
+
+console.log('✅ View attendance system initialized');
+
+
+async function onSemesterChange() {
+  const semester = elements.semesterSelect?.value;
+  
+  if (!elements.subjectSelect || !selectedStreamData) return;
+  
+  elements.subjectSelect.innerHTML = '<option value="">-- Select Subject --</option>';
+  elements.subjectSelect.disabled = true;
+  elements.addBtn.disabled = true;
+  
+  if (!semester) {
+    elements.subjectSelect.innerHTML = '<option value="">Select semester first</option>';
+    elements.subjectHelp.textContent = 'Choose semester to load subjects';
+    elements.subjectHelp.className = 'text-xs mt-1 ml-1 font-medium';
+    elements.subjectHelp.style.color = '#49769F';
+    return;
+  }
+
+  await loadSubjects(selectedStreamData.name, semester);
+}
+
+async function loadSubjects(stream, semester) {
+  try {
+    elements.subjectLoader.classList.remove('hidden');
+    elements.subjectSelect.innerHTML = '<option value="">Loading...</option>';
+    elements.subjectHelp.textContent = 'Loading subjects...';
+    elements.subjectHelp.className = 'text-xs mt-1 ml-1 font-semibold';
+    elements.subjectHelp.style.color = '#0A4174';
+    
+    const response = await fetch(`/api/subjects/${stream}/sem${semester}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    
+    const data = await response.json();
+    const subjects = data.subjects || data || [];
+    
+    elements.subjectLoader.classList.add('hidden');
+    
+    if (!Array.isArray(subjects) || subjects.length === 0) {
+      elements.subjectSelect.innerHTML = '<option value="">No subjects found</option>';
+      elements.subjectHelp.textContent = 'No subjects available for this semester';
+      elements.subjectHelp.className = 'text-xs mt-1 ml-1 font-medium';
+      elements.subjectHelp.style.color = '#FFB74D';
+      return;
+    }
+    
+    elements.subjectSelect.innerHTML = '<option value="">-- Select Subject --</option>';
+    subjects.forEach(subject => {
+      const subjectName = subject.subjectName || subject.name || subject;
+      const option = document.createElement('option');
+      option.value = subjectName;
+      option.textContent = subjectName;
+      if (subject.isLanguageSubject || subject.subjectType === 'LANGUAGE') {
+        option.textContent += ` (${subject.languageType})`;
+      }
+      elements.subjectSelect.appendChild(option);
+    });
+    
+    elements.subjectSelect.disabled = false;
+    elements.addBtn.disabled = false;
+    elements.subjectHelp.textContent = `✓ ${subjects.length} subjects loaded successfully`;
+    elements.subjectHelp.className = 'text-xs mt-1 ml-1 font-semibold';
+    elements.subjectHelp.style.color = '#4CAF50';
+    
+  } catch (error) {
+    elements.subjectLoader.classList.add('hidden');
+    elements.subjectSelect.innerHTML = '<option value="">Error loading subjects</option>';
+    elements.subjectHelp.textContent = '⚠ Failed to load subjects. Please try again';
+    elements.subjectHelp.className = 'text-xs mt-1 ml-1 font-medium';
+    elements.subjectHelp.style.color = '#EF5350';
+  }
+}
+
+async function handleAddToQueue(e) {
+  e.preventDefault();
+  
+  const stream = elements.selectedStream?.value;
+  const semester = elements.semesterSelect?.value;
+  const subject = elements.subjectSelect?.value;
+
+  if (!stream || !semester || !subject) {
+    showNotification('Please fill all fields', 'error');
+    return;
+  }
+
+  const duplicate = attendanceQueue.find(item => 
+    item.stream === stream && item.semester === semester && item.subject === subject
+  );
+
+  if (duplicate) {
+    showNotification('Class already in queue', 'warning');
+    return;
+  }
+
+  const queueItem = {
+    id: Date.now(),
+    stream,
+    semester,
+    subject,
+    timeAdded: new Date().toLocaleTimeString(),
+    dateAdded: new Date().toDateString(),
+    teacherId: userData.userName
+  };
+
+  // Create subject data for database storage
+  const subjectData = {
+    subjectId: `${stream.toLowerCase()}_${semester}_${subject.toLowerCase().replace(/\s+/g, '_')}_${Date.now()}`,
+    subjectName: subject,
+    subjectCode: subject.toUpperCase().replace(/\s+/g, '_'),
+    streamId: `${stream.toLowerCase()}_stream`,
+    streamName: stream,
+    semesterNumber: parseInt(semester),
+    status: 'active',
+    studentCount: 0,
+    students: [],
+    iaTests: [],
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+
+  // Save to local queue first
+  attendanceQueue.push(queueItem);
+  
+  // Save to localStorage immediately for persistence
+  localStorage.setItem('attendanceQueue', JSON.stringify(attendanceQueue));
+  
+  // Force immediate display update
+  updateQueueDisplay();
+  
+  // Try to save to database (this might fail, but that's ok)
+  try {
+    await saveQueueToDatabase(attendanceQueue);
+  } catch (error) {
+    console.log('Database save failed, using localStorage');
+  }
+
+  // Save created subject to teacher's database record
+  const subjectSaved = await saveCreatedSubject(subjectData);
+  
+  if (subjectSaved) {
+    showNotification('Class added & saved to database! 🎉', 'success');
+  } else {
+    showNotification('Class added to queue (database save failed)', 'warning');
+  }
+  
+  resetForm();
+  
+  // Navigate to home page first
+  showHomePage();
+  
+  // Multiple display updates to ensure reliability
+  setTimeout(() => {
+    updateQueueDisplay();
+    
+    // Additional fallback update
+    setTimeout(() => {
+      updateQueueDisplay();
+      
+      // Show success animation for the newly added item
+      const newItemElement = document.querySelector(`[data-id="${queueItem.id}"]`);
+      if (newItemElement) {
+        newItemElement.classList.add('animate-pulse');
+        newItemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          newItemElement.classList.remove('animate-pulse');
+        }, 2000);
+      }
+    }, 100);
+  }, 50);
+}
+
+// ============================================================================
+// SUBJECT MANAGEMENT FUNCTIONS
+// ============================================================================
+
+function selectCreateStream(streamName) {
+  if (!streamName) {
+    // Reset if no stream selected
+    createSelectedStreamData = null;
+    document.getElementById('createSelectedStream').value = '';
+    document.getElementById('createSemester').innerHTML = '<option value="">Select stream first</option>';
+    const createSubject = document.getElementById('createSubject');
+    if (createSubject) {
+      createSubject.innerHTML = '<option value="">Select stream first</option>';
+      createSubject.disabled = true;
+    }
+    return;
+  }
+
+  // Find selected stream data
+  const streamData = streams.find(s => s.name === streamName);
+  
+  // Update selected stream
+  createSelectedStreamData = streamData;
+  document.getElementById('createSelectedStream').value = streamName;
+  
+  // Update semester dropdown for this stream
+  const createSemester = document.getElementById('createSemester');
+  if (createSemester) {
+    createSemester.innerHTML = '<option value="">Select semester</option>';
+    
+    if (streamData && streamData.limitedSemesters) {
+      // Add only limited semesters
+      streamData.limitedSemesters.forEach(sem => {
+        const option = document.createElement('option');
+        option.value = sem;
+        option.textContent = `Semester ${sem}`;
+        createSemester.appendChild(option);
+      });
+    } else {
+      // Add all semesters
+      for (let i = 1; i <= 6; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `Semester ${i}`;
+        createSemester.appendChild(option);
+      }
+    }
+  }
+  
+  // Reset subject selection
+  const createSubject = document.getElementById('createSubject');
+  if (createSubject) {
+    createSubject.innerHTML = '<option value="">Select semester first</option>';
+    createSubject.disabled = true;
+  }
+}
+
+function resetCreateForm() {
+  createSelectedStreamData = null;
+  document.getElementById('createSelectedStream').value = '';
+  
+  // Reset stream dropdown
+  const createStreamContainer = document.getElementById('createStreamContainer');
+  if (createStreamContainer) {
+    createStreamContainer.value = '';
+  }
+  
+  // Reset semester dropdown
+  const createSemester = document.getElementById('createSemester');
+  if (createSemester) {
+    createSemester.innerHTML = '<option value="">Select stream first</option>';
+  }
+  
+  const createSubject = document.getElementById('createSubject');
+  const createSubjectHelp = document.getElementById('createSubjectHelp');
+  
+  if (createSubject) {
+    createSubject.innerHTML = '<option value="">Select stream & semester first</option>';
+    createSubject.disabled = true;
+  }
+  
+  if (createSubjectHelp) {
+    createSubjectHelp.textContent = 'Choose stream and semester to load subjects';
+    createSubjectHelp.className = 'text-xs text-gray-500 mt-1 ml-1';
+  }
+}
+
+async function onCreateSemesterChange() {
+  const semester = document.getElementById('createSemester')?.value;
+  const createSubject = document.getElementById('createSubject');
+  const createSubjectHelp = document.getElementById('createSubjectHelp');
+  
+  if (!createSubject || !createSelectedStreamData) return;
+  
+  createSubject.innerHTML = '<option value="">-- Select Subject --</option>';
+  createSubject.disabled = true;
+  
+  if (!semester) {
+    createSubject.innerHTML = '<option value="">Select semester first</option>';
+    createSubjectHelp.textContent = 'Choose semester to load subjects';
+    createSubjectHelp.className = 'text-xs text-gray-500 mt-1 ml-1';
+    return;
+  }
+
+  await loadCreateSubjects(createSelectedStreamData.name, semester);
+}
+
+async function loadCreateSubjects(stream, semester) {
+  const createSubject = document.getElementById('createSubject');
+  const createSubjectLoader = document.getElementById('createSubjectLoader');
+  const createSubjectHelp = document.getElementById('createSubjectHelp');
+  
+  try {
+    createSubjectLoader.classList.remove('hidden');
+    createSubject.innerHTML = '<option value="">Loading...</option>';
+    createSubjectHelp.textContent = 'Loading subjects...';
+    createSubjectHelp.className = 'text-xs text-blue-600 mt-1 ml-1 font-medium';
+    
+    const response = await fetch(`/api/subjects/${stream}/sem${semester}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    
+    const data = await response.json();
+    const subjects = data.subjects || data || [];
+    
+    createSubjectLoader.classList.add('hidden');
+    
+    if (!Array.isArray(subjects) || subjects.length === 0) {
+      createSubject.innerHTML = '<option value="">No subjects found</option>';
+      createSubjectHelp.textContent = 'No subjects available';
+      createSubjectHelp.className = 'text-xs text-yellow-600 mt-1 ml-1 font-medium';
+      return;
+    }
+    
+    createSubject.innerHTML = '<option value="">-- Select Subject --</option>';
+    subjects.forEach(subject => {
+      const subjectName = subject.subjectName || subject.name || subject;
+      const option = document.createElement('option');
+      option.value = subjectName;
+      option.textContent = subjectName;
+      if (subject.isLanguageSubject || subject.subjectType === 'LANGUAGE') {
+        option.textContent += ` (${subject.languageType})`;
+        option.setAttribute('data-type', 'LANGUAGE');
+        option.setAttribute('data-language', subject.languageType);
+      } else {
+        option.setAttribute('data-type', 'CORE');
+      }
+      createSubject.appendChild(option);
+    });
+    
+    createSubject.disabled = false;
+    createSubjectHelp.textContent = `${subjects.length} subjects available`;
+    createSubjectHelp.className = 'text-xs text-green-600 mt-1 ml-1 font-medium';
+    
+  } catch (error) {
+    createSubjectLoader.classList.add('hidden');
+    createSubject.innerHTML = '<option value="">Error loading</option>';
+    createSubjectHelp.textContent = 'Failed to load subjects';
+    createSubjectHelp.className = 'text-xs text-red-500 mt-1 ml-1 font-medium';
+  }
+}
+
+async function handleCreateSubject(e) {
+  e.preventDefault();
+  
+  const stream = document.getElementById('createSelectedStream').value;
+  const semester = document.getElementById('createSemester').value;
+  const subjectSelect = document.getElementById('createSubject');
+  const subjectName = subjectSelect?.value?.trim();
+
+  if (!stream || !semester || !subjectName) {
+    showNotification('Please select all required fields', 'error');
+    return;
+  }
+
+  // Check for duplicate
+  const duplicate = createdSubjects.find(subject => 
+    subject.stream === stream && 
+    subject.semester === semester && 
+    subject.subjectName.toLowerCase() === subjectName.toLowerCase()
+  );
+
+  if (duplicate) {
+    showNotification('Subject already exists in your library', 'warning');
+    return;
+  }
+
+  // Get additional subject data from the selected option
+  const selectedOption = subjectSelect.selectedOptions[0];
+  const subjectType = selectedOption?.getAttribute('data-type') || 'CORE';
+  const languageType = selectedOption?.getAttribute('data-language');
+
+  const subjectData = {
+    id: Date.now().toString(),
+    subjectName,
+    subjectCode: subjectName.toUpperCase().replace(/\s+/g, '_'),
+    stream,
+    semester: parseInt(semester),
+    subjectType,
+    languageType,
+    createdAt: new Date().toISOString(),
+    teacherId: userData.userName,
+    firebaseUid: userData.firebaseUid
+  };
+
+  // Add to local array
+  createdSubjects.push(subjectData);
+  
+  // Save to localStorage
+  localStorage.setItem('createdSubjects', JSON.stringify(createdSubjects));
+  
+  // Try to save to database
+  try {
+    await saveSubjectToDatabase(subjectData);
+    showNotification('✅ Subject added to your library!', 'success');
+  } catch (error) {
+    console.log('Database save failed, using localStorage');
+    showNotification('Subject added locally', 'warning');
+  }
+  
+  // Update the subjects display immediately
+  updateSubjectsDisplay();
+  
+  // Reset form and go back
+  resetCreateForm();
+  showHomePage();
+  showSection('subjectsSection');
+}
+
+// Updated addSubjectToQueue function - allows duplicates, stays in current tab
+async function addSubjectToQueue(subjectId) {
+const subject = createdSubjects.find(s => s.id === subjectId);
+if (!subject) return;
+
+const queueItem = {
+id: Date.now() + Math.random(), // Allow duplicates with unique IDs
+stream: subject.stream,
+semester: subject.semester,
+subject: subject.subjectName,
+timeAdded: new Date().toLocaleTimeString(),
+dateAdded: new Date().toDateString(),
+teacherId: userData.userName,
+fromCreatedSubject: true
+};
+
+// Add to queue
+attendanceQueue.push(queueItem);
+
+// Save to localStorage
+localStorage.setItem('attendanceQueue', JSON.stringify(attendanceQueue));
+
+// Try to save to database
+try {
+await saveQueueToDatabase(attendanceQueue);
+} catch (error) {
+console.log('Database save failed, using localStorage');
+}
+
+showBlueNotification('Added to queue');
+
+// Update display but stay in current tab (subjects section)
+updateQueueDisplay();
+updateSubjectsDisplay();
+}
+
+// Updated deleteSubject function with blue confirmation
+async function deleteSubject(subjectId) {
+const subject = createdSubjects.find(s => s.id === subjectId);
+if (!subject) return;
+
+const confirmed = await showBlueConfirm(`Delete "${subject.subjectName}"?`);
+if (!confirmed) return;
+
+// Remove from local array
+createdSubjects = createdSubjects.filter(s => s.id !== subjectId);
+
+// Update localStorage
+localStorage.setItem('createdSubjects', JSON.stringify(createdSubjects));
+
+// Try to delete from database
+try {
+await deleteSubjectFromDatabase(subjectId);
+showBlueNotificationWithIcon('Subject deleted', 'delete');
+} catch (error) {
+console.log('Database deletion failed');
+showBlueNotificationWithIcon('Deleted locally', 'warning');
+}
+
+// Update display
+updateSubjectsDisplay();
+}
+
+// Main notification function - perfectly centered with light blue colors
+function showBlueNotification(message) {
+const existing = document.getElementById('blueNotify');
+if (existing) existing.remove();
+
+const notification = document.createElement('div');
+notification.id = 'blueNotify';
+
+notification.style.cssText = `
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 9999;
+padding: 12px 16px;
+border-radius: 12px;
+background: linear-gradient(135deg, #2196F3, #4E8EA2);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+border: 1px solid rgba(33, 150, 243, 0.4);
+color: white;
+font-weight: 500;
+font-size: 14px;
+white-space: nowrap;
+box-shadow: 0 8px 25px rgba(33, 150, 243, 0.3);
+animation: centerPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+`;
+
+// Add verified icon for "Added to queue" message
+if (message === 'Added to queue') {
+notification.innerHTML = `
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <i class="fas fa-check-circle" style="color: white; font-size: 14px;"></i>
+    <span>${message}</span>
+  </div>
+`;
+} else {
+notification.textContent = message;
+}
+
+document.body.appendChild(notification);
+
+// Auto remove after 2.5 seconds
+setTimeout(() => {
+if (notification.parentElement) {
+  notification.style.animation = 'centerFade 0.3s ease-out forwards';
+  setTimeout(() => notification.remove(), 300);
+}
+}, 2500);
+}
+
+// Enhanced notification with different types and colors
+function showBlueNotificationWithIcon(message, iconType = 'check') {
+const existing = document.getElementById('blueNotify');
+if (existing) existing.remove();
+
+const notification = document.createElement('div');
+notification.id = 'blueNotify';
+
+// Different colors for different notification types
+const notificationStyles = {
+success: {
+  background: 'linear-gradient(135deg, #2196F3, #4E8EA2)',
+  border: 'rgba(33, 150, 243, 0.4)',
+  shadow: 'rgba(33, 150, 243, 0.3)'
+},
+delete: {
+  background: 'linear-gradient(135deg, #F44336, #E57373)',
+  border: 'rgba(244, 67, 54, 0.4)',
+  shadow: 'rgba(244, 67, 54, 0.3)'
+},
+warning: {
+  background: 'linear-gradient(135deg, #FF9800, #FFB74D)',
+  border: 'rgba(255, 152, 0, 0.4)',
+  shadow: 'rgba(255, 152, 0, 0.3)'
+}
+};
+
+const style = notificationStyles[iconType] || notificationStyles.success;
+
+notification.style.cssText = `
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 9999;
+padding: 12px 16px;
+border-radius: 12px;
+background: ${style.background};
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+border: 1px solid ${style.border};
+color: white;
+font-weight: 500;
+font-size: 14px;
+white-space: nowrap;
+box-shadow: 0 8px 25px ${style.shadow};
+animation: centerPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+`;
+
+// Different icons for different message types
+const icons = {
+check: 'fas fa-check-circle',
+verified: 'fas fa-check-circle',
+success: 'fas fa-check',
+delete: 'fas fa-trash-alt',
+warning: 'fas fa-exclamation-triangle',
+info: 'fas fa-info-circle'
+};
+
+const iconClass = icons[iconType] || icons.check;
+
+notification.innerHTML = `
+<div style="display: flex; align-items: center; gap: 8px;">
+  <i class="${iconClass}" style="color: white; font-size: 14px;"></i>
+  <span>${message}</span>
+</div>
+`;
+
+document.body.appendChild(notification);
+
+// Auto remove after 2.5 seconds
+setTimeout(() => {
+if (notification.parentElement) {
+  notification.style.animation = 'centerFade 0.3s ease-out forwards';
+  setTimeout(() => notification.remove(), 300);
+}
+}, 2500);
+}
+
+// Blue confirmation dialog
+function showBlueConfirm(message) {
+return new Promise((resolve) => {
+const existing = document.getElementById('blueConfirm');
+if (existing) existing.remove();
+
+const dialog = document.createElement('div');
+dialog.id = 'blueConfirm';
+dialog.style.cssText = `
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(1, 29, 57, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+`;
+
+dialog.innerHTML = `
+  <div style="
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(123, 189, 232, 0.4);
+    animation: scaleIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  ">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div style="
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 12px;
+        box-shadow: 0 4px 12px rgba(239, 83, 80, 0.3);
+        background: linear-gradient(135deg, #EF5350, #F44336);
+      ">
+        <i class="fas fa-trash" style="color: white; font-size: 16px;"></i>
+      </div>
+      <p style="font-weight: 600; color: #001D39; margin: 0;">${message}</p>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <button onclick="resolveConfirm(false)" style="
+        flex: 1;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.3s;
+        color: #49769F;
+        border: 1px solid rgba(123, 189, 232, 0.3);
+        background: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+      " onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+        Cancel
+      </button>
+      <button onclick="resolveConfirm(true)" style="
+        flex: 1;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-weight: 600;
+        color: white;
+        font-size: 14px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(239, 83, 80, 0.3);
+        background: linear-gradient(135deg, #EF5350, #F44336);
+        border: none;
+        cursor: pointer;
+      " onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+        Delete
+      </button>
+    </div>
+  </div>
+`;
+
+window.resolveConfirm = (result) => {
+  dialog.style.animation = 'fadeOut 0.2s ease-in-out forwards';
+  setTimeout(() => {
+    dialog.remove();
+    delete window.resolveConfirm;
+    resolve(result);
+  }, 200);
+};
+
+dialog.addEventListener('click', (e) => {
+  if (e.target === dialog) {
+    window.resolveConfirm(false);
+  }
+});
+
+document.body.appendChild(dialog);
+});
+}
+
+// CSS animations
+const styles = `
+<style>
+:root {
+  --primary: #6366F1;
+  --primary-dark: #4f46e5;
+  --primary-light: #818cf8;
+  --accent: #A78BFA;
+  --success: #22C55E;
+  --danger: #EF4444;
+  --grey-50: #F9FAFB;
+  --grey-100: #F3F4F6;
+  --grey-200: #E5E7EB;
+  --grey-400: #9CA3AF;
+  --grey-600: #6B7280;
+  --grey-900: #111827;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, var(--grey-50) 0%, #FFFFFF 100%);
+  min-height: 100vh;
+  color: var(--grey-900);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--grey-200);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.glass-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--grey-200);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(167, 139, 250, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--accent);
+  color: var(--primary);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(167, 139, 250, 0.15);
+  transform: translateY(-1px);
+}
+
+.loading-spinner {
+  border: 3px solid var(--grey-200);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.queue-item {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--grey-200);
+}
+
+.queue-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.1);
+  border-color: var(--primary-light);
+}
+
+.queue-item.removing {
+  transform: translateX(100%) scale(0.8);
+  opacity: 0;
+}
+
+.form-input {
+  transition: all 0.3s ease;
+  border: 1px solid var(--grey-200);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  color: var(--grey-900);
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  outline: none;
+}
+
+.back-button {
+  transition: all 0.3s ease;
+  background: var(--grey-100);
+  color: var(--primary);
+}
+
+.back-button:hover {
+  background: var(--grey-200);
+  transform: translateX(-3px);
+}
+
+.status-present {
+  color: var(--success);
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.status-absent {
+  color: var(--danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.status-accent {
+  color: var(--accent);
+  background: rgba(167, 139, 250, 0.1);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-icon {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--grey-100);
+}
+
+.menu-icon:hover {
+  background: var(--grey-200);
+  transform: scale(1.05);
+}
+
+.menu-icon .line {
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  transition: all 0.3s ease;
+  border-radius: 1px;
+}
+
+.side-menu {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(30px);
+  border-right: 1px solid var(--grey-200);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.tab-active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.tab-inactive {
+  background: transparent;
+  color: var(--grey-600);
+}
+
+.tab-inactive:hover {
+  background: var(--grey-100);
+  color: var(--primary);
+}
+
+.icon-container {
+  background: linear-gradient(135deg, var(--grey-100), var(--grey-50));
+  border: 1px solid var(--grey-200);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--grey-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+}
+
+.alert-success {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--success);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.alert-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.alert-warning {
+  background: rgba(167, 139, 250, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  header {
+    margin: 0;
+    border-radius: 0;
+  }
+
+  main {
+    padding: 0;
+    margin: 0;
+  }
+
+  .glass-card {
+    margin: 0;
+    border-radius: 0;
+  }
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+</style>
+`;
+
+// Add styles to document
+if (!document.querySelector('#blueNotifyStyles')) {
+const styleSheet = document.createElement('style');
+styleSheet.id = 'blueNotifyStyles';
+styleSheet.innerHTML = styles;
+document.head.appendChild(styleSheet);
+}
+
+// ============================================================================
+// DATABASE FUNCTIONS FOR SUBJECTS
+// ============================================================================
+
+async function saveSubjectToDatabase(subjectData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/teacher/subjects`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        teacherId: userData.userEmail || userData.userName,
+        firebaseUid: userData.firebaseUid,
+        subject: subjectData
+      })
+    });
+
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const result = await response.json();
+    
+    if (result.success) {
+      console.log('💾 Subject saved to database successfully');
+      return result;
+    } else {
+      throw new Error(result.message || 'Failed to save subject');
+    }
+  } catch (error) {
+    console.error('Error saving subject to database:', error);
+    throw error;
+  }
+}
+
+async function loadSubjectsFromDatabase() {
+  try {
+    // Use firebaseUid first, then userEmail, then userName as fallback
+    const identifier = userData.firebaseUid || userData.userEmail || userData.userName;
+    console.log(`🔍 Loading subjects for identifier: "${identifier}" (firebaseUid: ${userData.firebaseUid}, userEmail: ${userData.userEmail}, userName: ${userData.userName})`);
+    const response = await fetch(`${API_BASE_URL}/teacher/${encodeURIComponent(identifier)}/subjects`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.log('No subjects found in database');
+        return [];
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    if (result.success) {
+      const databaseSubjects = result.subjects || [];
+      console.log(`📥 Loaded ${databaseSubjects.length} subjects from database`);
+      
+      // Merge with any local subjects that might not be in database yet
+      const localSubjects = JSON.parse(localStorage.getItem('createdSubjects') || '[]');
+      const mergedSubjects = [...databaseSubjects];
+      
+      // Add any local subjects that aren't in database
+      localSubjects.forEach(localSubject => {
+        const existsInDb = databaseSubjects.find(dbSubject => 
+          dbSubject.id === localSubject.id || 
+          (dbSubject.subjectName === localSubject.subjectName && 
+           dbSubject.stream === localSubject.stream && 
+           dbSubject.semester === localSubject.semester)
+        );
+        if (!existsInDb) {
+          mergedSubjects.push(localSubject);
+        }
+      });
+      
+      createdSubjects = mergedSubjects;
+      console.log(`📥 Final merged subjects: ${createdSubjects.length} (${databaseSubjects.length} from DB + ${mergedSubjects.length - databaseSubjects.length} local)`);
+      
+      // Update localStorage with merged data
+      localStorage.setItem('createdSubjects', JSON.stringify(createdSubjects));
+      
+      return createdSubjects;
+    } else {
+      throw new Error(result.message || 'Failed to load subjects');
+    }
+  } catch (error) {
+    console.error('Error loading subjects from database:', error);
+    throw error;
+  }
+}
+
+async function loadCompletedFromDatabase() {
+  try {
+    // Use firebaseUid first, then userEmail, then userName as fallback
+    const identifier = userData.firebaseUid || userData.userEmail || userData.userName;
+    console.log(`🔍 Loading completed classes for identifier: "${identifier}" (firebaseUid: ${userData.firebaseUid}, userEmail: ${userData.userEmail}, userName: ${userData.userName})`);
+    const response = await fetch(`${API_BASE_URL}/teacher/${encodeURIComponent(identifier)}/completed`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.log('No completed classes found in database');
+        return [];
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    if (result.success) {
+      completedClasses = result.completedClasses || [];
+      console.log(`📥 Loaded ${completedClasses.length} completed classes from database`);
+      
+      // Update localStorage
+      localStorage.setItem('completedClasses', JSON.stringify(completedClasses));
+      
+      return completedClasses;
+    } else {
+      throw new Error(result.message || 'Failed to load completed classes');
+    }
+  } catch (error) {
+    console.error('Error loading completed classes from database:', error);
+    throw error;
+  }
+}
+
+async function saveCompletedToDatabase(completedClass) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/teacher/completed`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        teacherId: userData.userEmail || userData.userName,
+        firebaseUid: userData.firebaseUid,
+        completedClass: completedClass
+      })
+    });
+
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const result = await response.json();
+    
+    if (result.success) {
+      console.log('💾 Completed class saved to database successfully');
+      return result;
+    } else {
+      throw new Error(result.message || 'Failed to save completed class');
+    }
+  } catch (error) {
+    console.error('Error saving completed class to database:', error);
+    throw error;
+  }
+}
+
+async function deleteSubjectFromDatabase(subjectId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/teacher/subjects/${subjectId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        teacherId: userData.userEmail || userData.userName,
+        firebaseUid: userData.firebaseUid
+      })
+    });
+
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const result = await response.json();
+    
+    if (result.success) {
+      console.log('🗑️ Subject deleted from database successfully');
+      return result;
+    } else {
+      throw new Error(result.message || 'Failed to delete subject');
+    }
+  } catch (error) {
+    console.error('Error deleting subject from database:', error);
+    throw error;
+  }
+}
+
+// Updated takeAttendance function
+async function takeAttendance(itemId) {
+const item = attendanceQueue.find(q => q.id == itemId);
+if (!item) return;
+
+// Show loading state
+const queueElement = document.querySelector(`[data-id="${itemId}"]`);
+const attendButton = queueElement?.querySelector('button');
+if (attendButton) {
+attendButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Loading...';
+attendButton.disabled = true;
+}
+
+try {
+// Remove from queue immediately (optimistic update)
+attendanceQueue = attendanceQueue.filter(q => q.id != itemId);
+
+// Add to completed classes
+const completedItem = { 
+  ...item, 
+  completedTime: new Date().toLocaleTimeString(),
+  completedDate: new Date().toDateString()
+};
+completedClasses.push(completedItem);
+
+// Update localStorage immediately
+localStorage.setItem('attendanceQueue', JSON.stringify(attendanceQueue));
+localStorage.setItem('completedClasses', JSON.stringify(completedClasses));
+
+// Try to save completed class to database
+try {
+  await saveCompletedToDatabase(completedItem);
+} catch (error) {
+  console.log('Database save failed for completed class:', error);
+}
+
+// Update display immediately
+updateQueueDisplay();
+
+// Try to update database (but don't wait for it)
+deleteQueueItemFromDatabase(itemId).catch(error => {
+  console.log('Database deletion failed:', error);
+});
+
+saveQueueToDatabase(attendanceQueue).catch(error => {
+  console.log('Database save failed:', error);
+});
+
+// Create class info object for attendance page
+const classInfo = {
+  stream: item.stream,
+  semester: parseInt(item.semester),
+  subject: item.subject,
+  autoSelect: true,
+  teacherId: userData.userName,
+  teacherEmail: userData.userEmail
+};
+
+// Store class info in sessionStorage for index.html to pick up
+sessionStorage.setItem('selectedClass', JSON.stringify(classInfo));
+
+// Store redirect information so index.html knows to come back here
+sessionStorage.setItem('redirectAfterAttendance', 'myclass.html');
+
+// Use center blue notification
+showNotification('Redirecting...', 'success');
+
+// Short delay for user feedback, then redirect
+setTimeout(() => {
+  window.location.href = 'index.html';
+}, 800);
+
+} catch (error) {
+console.error('Error in takeAttendance:', error);
+
+// Use center orange notification
+showNotification('Error processing request', 'error');
+
+// Restore button state
+if (attendButton) {
+  attendButton.innerHTML = '<i class="fas fa-user-check mr-2"></i>Take Attendance';
+  attendButton.disabled = false;
+}
+}
+}
+
+// Simplified removeFromQueue function
+function removeFromQueue(itemId) {
+const item = attendanceQueue.find(q => q.id == itemId);
+if (!item) return;
+
+// Remove from queue immediately
+attendanceQueue = attendanceQueue.filter(q => q.id != itemId);
+
+// Update localStorage immediately
+localStorage.setItem('attendanceQueue', JSON.stringify(attendanceQueue));
+
+// Try to delete from database
+try {
+deleteQueueItemFromDatabase(itemId).catch(error => {
+  console.log('Database deletion failed:', error);
+});
+
+saveQueueToDatabase(attendanceQueue).catch(error => {
+  console.log('Database save failed:', error);
+});
+} catch (error) {
+console.log('Database update failed, using localStorage only');
+}
+
+// Use center orange notification
+showNotification('Removed from queue', 'warning');
+
+// Update displays
+updateQueueDisplay();
+updateSubjectsDisplay();
+}
+
+// Fixed showNotification function - CENTER positioned with blue/orange theme
+// Fixed showNotification function - positioned above bottom with blue/orange theme
+function showNotification(message, type) {
+// Remove any existing notification
+const existing = document.getElementById('bottomNotification');
+if (existing) existing.remove();
+
+// Clean message (remove emojis)
+const cleanMessage = message.replace(/[✅❌⚠️]/g, '').trim();
+
+// Create notification element
+const notification = document.createElement('div');
+notification.id = 'bottomNotification';
+
+// Theme colors and icons
+const themes = {
+success: {
+  background: 'linear-gradient(135deg, #2196F3, #4E8EA2)',
+  border: 'rgba(33, 150, 243, 0.4)',
+  shadow: 'rgba(33, 150, 243, 0.3)',
+  icon: 'fas fa-check-circle'
+},
+error: {
+  background: 'linear-gradient(135deg, #FF9800, #FFB74D)',
+  border: 'rgba(255, 152, 0, 0.4)',
+  shadow: 'rgba(255, 152, 0, 0.3)',
+  icon: 'fas fa-exclamation-triangle'
+},
+warning: {
+  background: 'linear-gradient(135deg, #FF9800, #FFB74D)',
+  border: 'rgba(255, 152, 0, 0.4)',
+  shadow: 'rgba(255, 152, 0, 0.3)',
+  icon: 'fas fa-minus-circle'
+}
+};
+
+const theme = themes[type] || themes.success;
+
+// Apply positioning above bottom
+notification.style.cssText = `
+position: fixed;
+bottom: 80px;
+left: 50%;
+transform: translateX(-50%) translateY(100px);
+z-index: 9999;
+padding: 12px 16px;
+border-radius: 12px;
+background: ${theme.background};
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+border: 1px solid ${theme.border};
+color: white;
+font-weight: 500;
+font-size: 14px;
+white-space: nowrap;
+box-shadow: 0 8px 25px ${theme.shadow};
+transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+`;
+
+// Add content with icon
+notification.innerHTML = `
+<div style="display: flex; align-items: center; gap: 8px;">
+  <i class="${theme.icon}" style="color: white; font-size: 14px;"></i>
+  <span>${cleanMessage}</span>
+</div>
+`;
+
+document.body.appendChild(notification);
+
+// Slide up animation
+setTimeout(() => {
+notification.style.transform = 'translateX(-50%) translateY(0)';
+}, 10);
+
+// Auto remove after 2.5 seconds
+setTimeout(() => {
+notification.style.transform = 'translateX(-50%) translateY(100px)';
+setTimeout(() => {
+  if (notification.parentElement) {
+    notification.remove();
+  }
+}, 300);
+}, 2500);
+}
+
+
+// CSS animations for center notifications
+const centerNotificationStyles = `
+<style>
+@keyframes centerPop {
+0% {
+transform: translate(-50%, -50%) scale(0.7);
+opacity: 0;
+}
+100% {
+transform: translate(-50%, -50%) scale(1);
+opacity: 1;
+}
+}
+
+@keyframes centerFade {
+0% {
+transform: translate(-50%, -50%) scale(1);
+opacity: 1;
+}
+100% {
+transform: translate(-50%, -50%) scale(0.9);
+opacity: 0;
+}
+}
+</style>
+`;
+
+// Add styles if not present
+if (!document.querySelector('#centerNotificationStyles')) {
+const styleSheet = document.createElement('style');
+styleSheet.id = 'centerNotificationStyles';
+styleSheet.innerHTML = centerNotificationStyles;
+document.head.appendChild(styleSheet);
+}
+
+
+// Toggle Menu Function moved to top of script for immediate availability
+
+// View Attendance Function
+window.viewAttendance = async () => {
+  try {
+    console.log('🔍 Preparing to view attendance with full access...');
+
+    // Store teacher info if needed later
+    sessionStorage.setItem('teacherViewMode', 'true');
+    sessionStorage.setItem('teacherInfo', JSON.stringify({
+      name: userData.userName,
+      email: userData.userEmail,
+      firebaseUid: userData.firebaseUid
+    }));
+
+    showNotification('🔄 Opening View Attendance...', 'info');
+
+    const menu = document.getElementById("mobileMenu");
+    if (menu) menu.classList.add('hidden');
+
+    // Navigate directly to dedicated page
+    setTimeout(() => {
+      window.location.href = 'view-attendance.html';
+    }, 200);
+  } catch (error) {
+    console.error('❌ Error preparing attendance view:', error);
+    showNotification('❌ Failed to load attendance view', 'error');
+  }
+};
+
+// Logout Function
+async function logout() {
+  try {
+    // Clear both localStorage and sessionStorage
+    localStorage.clear();
+    sessionStorage.clear();
+    
+    // If using Firebase auth, sign out
+    if (typeof auth !== 'undefined' && typeof signOut !== 'undefined') {
+      await signOut(auth);
+    }
+    
+    showNotification('Logged out successfully! 👋', 'success');
+    
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 1000);
+  } catch (error) {
+    console.error('Logout error:', error);
+    showNotification('Logout failed. Please try again.', 'error');
+  }
+}
+
+// Load user info into menu
+function loadUserInfo() {
+  // Check both localStorage and sessionStorage for user data
+  const userName = localStorage.getItem('userName') || sessionStorage.getItem('userName') || 'Teacher';
+  const userEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail') || 'teacher@mla.edu';
+  const firebaseUid = localStorage.getItem('firebaseUid') || sessionStorage.getItem('firebaseUid') || null;
+  
+  console.log('Retrieved user data from storage:', {
+    userName,
+    userEmail,
+    firebaseUid,
+    hasFirebaseUid: !!firebaseUid,
+    firebaseUidType: typeof firebaseUid
+  });
+  
+  // Update global userData object
+  userData.userName = userName;
+  userData.userEmail = userEmail;
+  userData.firebaseUid = firebaseUid;
+  
+  const userNameElement = document.getElementById('userName');
+  const userEmailElement = document.getElementById('userEmail');
+  
+  if (userNameElement) userNameElement.textContent = userName;
+  if (userEmailElement) userEmailElement.textContent = userEmail;
+}
+
+// Initialize user info when page loads with authentication check
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log('🔄 Page loaded, checking authentication...');
+  
+  // Enhanced authentication check - allows all Firebase users
+  function isAuthorizedUser(email) {
+    if (!email) {
+      console.log('❌ No email provided');
+      return false;
+    }
+    // Allow all users with valid email addresses
+    const isValidEmail = email.includes('@') && email.includes('.');
+    console.log(`📧 Email ${email} is ${isValidEmail ? 'valid' : 'invalid'}`);
+    return isValidEmail;
+  }
+
+  // Add small delay to ensure localStorage is ready
+  await new Promise(resolve => setTimeout(resolve, 100));
+  
+  let isAuthenticated = false;
+  
+  // Check localStorage/sessionStorage authentication
+  const storedAuth = localStorage.getItem('isAuthenticated') || sessionStorage.getItem('isAuthenticated');
+  const userEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+  const userName = localStorage.getItem('userName') || sessionStorage.getItem('userName');
+  
+  console.log('🔍 Storage check:', {
+    storedAuth,
+    userEmail,
+    userName,
+    localStorage_keys: Object.keys(localStorage),
+    sessionStorage_keys: Object.keys(sessionStorage)
+  });
+  
+  if (storedAuth === 'true' && userEmail) {
+    if (isAuthorizedUser(userEmail)) {
+      isAuthenticated = true;
+      userData.userEmail = userEmail;
+      userData.userName = userName || 'Teacher';
+      console.log('✅ User authenticated via storage:', userEmail);
+    } else {
+      console.log('❌ User email not in authorized list:', userEmail);
+    }
+  } else {
+    console.log('❌ Missing authentication data:', { storedAuth, userEmail });
+  }
+
+  if (!isAuthenticated) {
+    console.log('❌ Authentication failed, redirecting to login in 2 seconds...');
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 2000);
+    return;
+  }
+
+  // User is authenticated, initialize app
+  console.log('🚀 Initializing app for user:', userData.userEmail);
+  
+  try {
+    console.log('Initializing teacher in database...');
+    await initializeTeacherInDatabase();
+    console.log('Teacher initialized successfully');
+  } catch (error) {
+    console.error('Error initializing teacher:', error);
+    showNotification('Database connection issue (continuing offline)', 'warning');
+  }
+
+  checkNewDay();
+  
+  try {
+    console.log('🔄 Loading queue from database...');
+    await loadQueueFromDatabase();
+    console.log('✅ Queue loaded from database successfully');
+    updateQueueDisplay();
+  } catch (error) {
+    console.log('⚠️ Database load failed, trying localStorage fallback');
+    attendanceQueue = JSON.parse(localStorage.getItem('attendanceQueue') || '[]');
+    updateQueueDisplay();
+  }
+
+  // Load subjects from database or localStorage
+  try {
+    console.log('🔄 Loading subjects from database...');
+    await loadSubjectsFromDatabase();
+    console.log('✅ Subjects loaded from database successfully');
+    updateSubjectsDisplay(); // Update display after loading
+  } catch (error) {
+    console.log('⚠️ Database load failed, trying localStorage fallback');
+    createdSubjects = JSON.parse(localStorage.getItem('createdSubjects') || '[]');
+    updateSubjectsDisplay(); // Update display after fallback
+  }
+
+  // Load completed classes from database or localStorage
+  try {
+    console.log('🔄 Loading completed classes from database...');
+    await loadCompletedFromDatabase();
+    console.log('✅ Completed classes loaded from database successfully');
+  } catch (error) {
+    console.log('⚠️ Database load failed, trying localStorage fallback');
+    completedClasses = JSON.parse(localStorage.getItem('completedClasses') || '[]');
+  }
+  
+  createStreamCards();
+
+  // Set up event listeners
+  if (elements.semesterSelect) elements.semesterSelect.addEventListener('change', onSemesterChange);
+  if (document.getElementById('addClassForm')) document.getElementById('addClassForm').addEventListener('submit', handleAddToQueue);
+  if (document.getElementById('createSubjectForm')) document.getElementById('createSubjectForm').addEventListener('submit', handleCreateSubject);
+  if (document.getElementById('createSemester')) document.getElementById('createSemester').addEventListener('change', onCreateSemesterChange);
+
+  loadUserInfo();
+  
+  // Ensure teacher profile exists in database
+  if (userData.firebaseUid) {
+    console.log('Initializing teacher in database...');
+    await saveTeacherProfile();
+  }
+  
+  console.log('✅ App initialization completed successfully');
+  
+  // Setup menu event handlers
+  setupMenuEventHandlers();
+});
+
+// Setup menu event handlers function
+function setupMenuEventHandlers() {
+  const menuButton = document.querySelector('.menu-icon');
+  const menuBackdrop = document.getElementById('menuBackdrop');
+  const menuCloseBtn = document.getElementById('menuCloseBtn');
+  
+  // Remove any existing event listeners to prevent duplicates
+  if (menuButton) {
+    // Clone node to remove all event listeners
+    const newMenuButton = menuButton.cloneNode(true);
+    menuButton.parentNode.replaceChild(newMenuButton, menuButton);
+    
+    console.log('🔧 Setting up menu button click handler');
+    newMenuButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('🖱️ Menu button clicked');
+      toggleMenu();
+    });
+  } else {
+    console.error('❌ Menu button not found');
+  }
+  
+  // Setup backdrop click handler
+  if (menuBackdrop) {
+    menuBackdrop.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('🖱️ Backdrop clicked');
+      toggleMenu();
+    });
+  }
+  
+  // Setup close button click handler
+  if (menuCloseBtn) {
+    menuCloseBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('🖱️ Close button clicked');
+      toggleMenu();
+    });
+  }
+  
+  // Setup keyboard handler for Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const menu = document.getElementById("mobileMenu");
+      if (menu && !menu.classList.contains('hidden')) {
+        console.log('⌨️ Escape key pressed, closing menu');
+        toggleMenu();
+      }
+    }
+  });
+  
+  console.log('✅ All menu event handlers setup completed');
+}
+
+function openWhatsAppContact() {
+  const whatsappNumber = '917483729869'; // Replace with your number
+  
+  // ✅ Shorter personalized message
+  const message = encodeURIComponent(`Hi Skanda! 👋
+
+I need help with the Smart Attendance System. 
+
+Please let me know:
+• What problem are you facing?
+• Can you send a screenshot of the issue?
+
+Thanks for your support! 🙏`);
+  
+  const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+  
+  try {
+    if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      window.location.href = `whatsapp://send?phone=${whatsappNumber}&text=${message}`;
+      setTimeout(() => window.open(whatsappURL, '_blank'), 2000);
+    } else {
+      window.open(whatsappURL, '_blank');
+    }
+    
+    // Close mobile menu
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) {
+      mobileMenu.classList.add('-translate-x-full');
+      setTimeout(() => mobileMenu.classList.add('hidden'), 300);
+    }
+    
+  } catch (error) {
+    console.error('❌ WhatsApp error:', error);
+    alert(`Contact Skanda: ${whatsappNumber.replace(/^91/, '+91 ')}\n\nMessage: Hi Skanda! I need help with the Smart Attendance System. Please let me know what problem you're facing and send screenshots if possible.`);
+  }
+}
+
+</script>

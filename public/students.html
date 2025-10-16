@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round" rel="stylesheet">
+    <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4f46e5;
+            --success: #22C55E;
+            --danger: #EF4444;
+            --grey-50: #F9FAFB;
+            --grey-100: #F3F4F6;
+            --grey-200: #E5E7EB;
+            --grey-600: #6B7280;
+            --grey-700: #374151;
+            --grey-900: #111827;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            color: var(--grey-900);
+            font-size: 13px;
+        }
+        
+        .tabs-container {
+            background: white;
+            border-bottom: 2px solid var(--grey-200);
+            padding: 0 12px;
+            display: flex;
+            gap: 2px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .tab-btn {
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--grey-600);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .tab-btn:hover {
+            color: var(--primary);
+            background: var(--grey-50);
+        }
+        
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .page-header {
+            background: white;
+            border-bottom: 1px solid var(--grey-200);
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .page-title i {
+            font-size: 20px;
+        }
+  
+        .stats-container {
+            display: flex;
+            gap: 8px;
+            padding: 8px 12px;
+            background: white;
+            border-bottom: 1px solid var(--grey-200);
+            overflow-x: auto;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 8px 12px;
+            min-width: 140px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--grey-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+        }
+        
+        .stat-icon.green {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+        }
+        
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: #4338ca;
+        }
+        
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+            color: #9a3412;
+        }
+        
+        .stat-icon.red {
+            background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+            color: #991b1b;
+        }
+        
+        .stat-icon.yellow {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--grey-900);
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+        
+        .stat-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--grey-600);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .modern-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 11px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .modern-btn i {
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 2px 6px rgba(99, 102, 241, 0.25);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(99, 102, 241, 0.35);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #16a34a 100%);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-text {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--grey-200);
+        }
+        
+        .filters-bar {
+            background: white;
+            border-bottom: 1px solid var(--grey-200);
+            padding: 8px 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 130px;
+        }
+        
+        .filter-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--grey-600);
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+        
+        .filter-select, .filter-input, .form-input {
+            padding: 6px 10px;
+            border: 1px solid var(--grey-200);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            background: white;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .filter-select:focus, .filter-input:focus, .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        /* CHECKBOX STYLES */
+.checkbox-cell {
+    width: 40px;
+    text-align: center;
+}
+
+.student-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+.select-all-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+.bulk-actions-bar {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    padding: 10px 12px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    border-bottom: 1px solid var(--primary-dark);
+}
+
+.bulk-actions-bar.show {
+    display: flex !important;
+}
+
+.bulk-actions-bar .selected-count {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.bulk-actions-bar .bulk-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.bulk-btn.delete {
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+}
+
+.bulk-btn.delete:hover {
+    background: #dc2626;
+}
+
+.bulk-btn.deselect {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.bulk-btn.deselect:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+        .modern-table-container {
+            background: white;
+            overflow-x: auto;
+        }
+
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .modern-table th,
+        .modern-table td {
+            border: 1px solid #d0d0d0;
+            padding: 6px 8px;
+            text-align: left;
+            background: white;
+            vertical-align: middle;
+        }
+
+        .modern-table thead th {
+            background: #f0f0f0 !important;
+            font-weight: 600;
+            font-size: 10px;
+            color: #333;
+            text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 6px 8px;
+        }
+
+        .modern-table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            display: inline-flex;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-primary {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: transparent;
+            transition: all 0.2s ease;
+            margin: 0 1px;
+        }
+
+        .action-btn i {
+            font-size: 16px;
+        }
+
+        .action-btn.edit {
+            color: var(--primary);
+        }
+
+        .action-btn.edit:hover {
+            background: #e0e7ff;
+        }
+
+        .action-btn.delete {
+            color: var(--danger);
+        }
+
+        .action-btn.delete:hover {
+            background: #fee2e2;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal.active {
+            display: flex !important;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--grey-600);
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 14px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--grey-700);
+            margin-bottom: 5px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--grey-200);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .loading-overlay.show {
+            display: flex !important;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--grey-200);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* INLINE EDITING STYLES */
+.table-row-editable {
+    cursor: pointer;
+}
+
+.table-row-editable:hover {
+    background: #f0f7ff !important;
+}
+
+.inline-edit-input, .inline-edit-select {
+    width: 100%;
+    padding: 4px 6px;
+    border: 2px solid var(--primary);
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+}
+
+.inline-edit-input:focus, .inline-edit-select:focus {
+    outline: none;
+    border-color: var(--primary-dark);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.inline-edit-actions {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+}
+
+.inline-save-btn, .inline-cancel-btn {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.inline-save-btn {
+    background: var(--success);
+    color: white;
+}
+
+.inline-save-btn:hover {
+    background: #16a34a;
+}
+
+.inline-cancel-btn {
+    background: var(--grey-200);
+    color: var(--grey-700);
+}
+
+.inline-cancel-btn:hover {
+    background: var(--grey-300);
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab('students')">
+            <i class="material-icons-round">group</i>
+            Students
+        </button>
+        <button class="tab-btn" onclick="switchTab('streams')">
+            <i class="material-icons-round">school</i>
+            Streams
+        </button>
+        <button class="tab-btn" onclick="switchTab('subjects')">
+            <i class="material-icons-round">menu_book</i>
+            Subjects
+        </button>
+    </div>
+    <div id="studentsTab" class="tab-content active">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="material-icons-round">group</i>
+                Students Management
+            </h1>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button class="modern-btn btn-primary" onclick="refreshStudents()">
+                    <i class="material-icons-round">refresh</i> Refresh
+                </button>
+                <button class="modern-btn btn-success" onclick="openAddStudentModal()">
+                    <i class="material-icons-round">add</i> Add Student
+                </button>
+                <button class="modern-btn btn-primary" onclick="openBulkUploadModal()">
+                    <i class="material-icons-round">upload_file</i> Bulk Upload
+                </button>
+                <button class="modern-btn btn-primary" onclick="exportStudents()">
+                    <i class="material-icons-round">download</i> Export
+                </button>
+            </div>
+        </div>
+    
+        <!-- STATS -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="totalStudents">0</div>
+                    <div class="stat-label">Total Students</div>
+                </div>
+                <div class="stat-icon blue">
+                    <i class="material-icons-round">group</i>
+                </div>
+            </div>
+    
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="activeStudents">0</div>
+                    <div class="stat-label">Active</div>
+                </div>
+                <div class="stat-icon green">
+                    <i class="material-icons-round">check_circle</i>
+                </div>
+            </div>
+    
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="inactiveStudents">0</div>
+                    <div class="stat-label">Inactive</div>
+                </div>
+                <div class="stat-icon red">
+                    <i class="material-icons-round">cancel</i>
+                </div>
+            </div>
+    
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="filteredStudents">0</div>
+                    <div class="stat-label">Showing</div>
+                </div>
+                <div class="stat-icon purple">
+                    <i class="material-icons-round">filter_list</i>
+                </div>
+            </div>
+        </div>
+    
+        <!-- BULK ACTIONS BAR -->
+        <div class="bulk-actions-bar" id="bulkActionsBar">
+            <div class="selected-count">
+                <span id="selectedCount">0</span> students selected
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="bulk-btn deselect" onclick="deselectAll()">
+                    <i class="material-icons-round" style="font-size: 16px;">close</i>
+                    Deselect All
+                </button>
+                <button class="bulk-btn delete" onclick="bulkDeleteSelected()">
+                    <i class="material-icons-round" style="font-size: 16px;">delete</i>
+                    Delete Selected
+                </button>
+            </div>
+        </div>
+    
+        <!-- FILTERS -->
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label class="filter-label">Stream</label>
+                <select id="studentStreamFilter" class="filter-select" onchange="applyStudentFilters()">
+                    <option value="">All Streams</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Semester</label>
+                <select id="studentSemesterFilter" class="filter-select" onchange="applyStudentFilters()">
+                    <option value="">All Semesters</option>
+                    <option value="1">Semester 1</option>
+                    <option value="2">Semester 2</option>
+                    <option value="3">Semester 3</option>
+                    <option value="4">Semester 4</option>
+                    <option value="5">Semester 5</option>
+                    <option value="6">Semester 6</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Language</label>
+                <select id="studentLanguageFilter" class="filter-select" onchange="applyStudentFilters()">
+                    <option value="">All Languages</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Elective</label>
+                <select id="studentElectiveFilter" class="filter-select" onchange="applyStudentFilters()">
+                    <option value="">All Electives</option>
+                </select>
+            </div>
+            <div class="filter-group" style="flex: 1; max-width: 280px;">
+                <label class="filter-label">Search</label>
+                <input type="text" id="studentSearchInput" class="filter-input" placeholder="Search..." oninput="applyStudentFilters()">
+            </div>
+        </div>
+        
+        <!-- TABLE -->
+        <div class="modern-table-container">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th class="checkbox-cell">
+                            <input type="checkbox" class="select-all-checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()">
+                        </th>
+                        <th style="width: 50px;">#</th>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Stream</th>
+                        <th>Semester</th>
+                        <th>Language</th>
+                        <th>Elective</th>
+                        <th>Parent Phone</th>
+                        <th>Status</th>
+                        <th style="width: 100px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div id="streamsTab" class="tab-content">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="material-icons-round">school</i>
+                Streams Management
+            </h1>
+            <div style="display: flex; gap: 6px;">
+                <button class="modern-btn btn-primary" onclick="refreshStreams()">
+                    <i class="material-icons-round">refresh</i> Refresh
+                </button>
+                <button class="modern-btn btn-success" onclick="openAddStreamModal()">
+                    <i class="material-icons-round">add</i> Add Stream
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="totalStreams">0</div>
+                    <div class="stat-label">Total Streams</div>
+                </div>
+                <div class="stat-icon blue">
+                    <i class="material-icons-round">school</i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="activeStreams">0</div>
+                    <div class="stat-label">Active</div>
+                </div>
+                <div class="stat-icon green">
+                    <i class="material-icons-round">check_circle</i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="totalSubjectsInStreams">0</div>
+                    <div class="stat-label">Subjects</div>
+                </div>
+                <div class="stat-icon purple">
+                    <i class="material-icons-round">menu_book</i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="studentsInStreams">0</div>
+                    <div class="stat-label">Students</div>
+                </div>
+                <div class="stat-icon orange">
+                    <i class="material-icons-round">group</i>
+                </div>
+            </div>
+        </div>
+
+        <div class="modern-table-container">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">#</th>
+                        <th>Stream Name</th>
+                        <th>Stream Code</th>
+                        <th>Semesters</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th style="width: 100px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="streamsTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="subjectsTab" class="tab-content">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="material-icons-round">menu_book</i>
+                Subjects Management
+            </h1>
+            <div style="display: flex; gap: 6px;">
+                <button class="modern-btn btn-primary" onclick="refreshSubjects()">
+                    <i class="material-icons-round">refresh</i> Refresh
+                </button>
+                <button class="modern-btn btn-success" onclick="openAddSubjectModal()">
+                    <i class="material-icons-round">add</i> Add Subject
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="totalSubjects">0</div>
+                    <div class="stat-label">Total Subjects</div>
+                </div>
+                <div class="stat-icon blue">
+                    <i class="material-icons-round">menu_book</i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="coreSubjects">0</div>
+                    <div class="stat-label">Core</div>
+                </div>
+                <div class="stat-icon green">
+                    <i class="material-icons-round">book</i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="electiveSubjects">0</div>
+                    <div class="stat-label">Elective</div>
+                </div>
+                <div class="stat-icon purple">
+                    <i class="material-icons-round">auto_stories</i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="languageSubjects">0</div>
+                    <div class="stat-label">Language</div>
+                </div>
+                <div class="stat-icon yellow">
+                    <i class="material-icons-round">translate</i>
+                </div>
+            </div>
+        </div>
+
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label class="filter-label">Stream</label>
+                <select id="subjectStreamFilter" class="filter-select" onchange="applySubjectFilters()">
+                    <option value="">All Streams</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Semester</label>
+                <select id="subjectSemesterFilter" class="filter-select" onchange="applySubjectFilters()">
+                    <option value="">All Semesters</option>
+                    <option value="1">Semester 1</option>
+                    <option value="2">Semester 2</option>
+                    <option value="3">Semester 3</option>
+                    <option value="4">Semester 4</option>
+                    <option value="5">Semester 5</option>
+                    <option value="6">Semester 6</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Type</label>
+                <select id="subjectTypeFilter" class="filter-select" onchange="applySubjectFilters()">
+                    <option value="">All Types</option>
+                    <option value="CORE">Core</option>
+                    <option value="ELECTIVE">Elective</option>
+                    <option value="LANGUAGE">Language</option>
+                </select>
+            </div>
+            <div class="filter-group" style="flex: 1; max-width: 280px;">
+                <label class="filter-label">Search</label>
+                <input type="text" id="subjectSearchInput" class="filter-input" placeholder="Search..." oninput="applySubjectFilters()">
+            </div>
+        </div>
+
+        <div class="modern-table-container">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">#</th>
+                        <th>Subject Name</th>
+                        <th>Subject Code</th>
+                        <th>Stream</th>
+                        <th>Semester</th>
+                        <th>Type</th>
+                        <th>Language Type</th>
+                        <th>Status</th>
+                        <th style="width: 100px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="subjectsTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+<!-- ============================================ -->
+<!-- STUDENT MODAL - PERFECT ALIGNMENT -->
+<!-- ============================================ -->
+<div id="studentModal" class="modal">
+    <div class="modal-content" style="max-width: 550px;">
+        <div class="modal-header">
+            <h3 id="studentModalTitle">
+                <i class="material-icons-round">person_add</i> 
+                Add Student
+            </h3>
+            <button class="close-btn" onclick="closeStudentModal()">
+                <i class="material-icons-round">close</i>
+            </button>
+        </div>
+        
+        <form id="studentForm" onsubmit="saveStudent(event)">
+            <!-- Row 1: ID & Name (2 columns) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Student ID <span style="color: #ef4444;">*</span></label>
+                    <input type="text" id="studentId" class="form-input" placeholder="e.g., U18ER23C0001" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Name <span style="color: #ef4444;">*</span></label>
+                    <input type="text" id="studentName" class="form-input" placeholder="Full Name" required>
+                </div>
+            </div>
+
+            <!-- Row 2: Stream & Semester (2 columns) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Stream <span style="color: #ef4444;">*</span></label>
+                    <select id="studentStream" class="form-input" required>
+                        <option value="">Select Stream</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Semester <span style="color: #ef4444;">*</span></label>
+                    <select id="studentSemester" class="form-input" required>
+                        <option value="">Select Semester</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 3: Language & Elective (2 columns) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Language Subject</label>
+                    <select id="studentLanguage" class="form-input">
+                        <option value="">Select Language</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Elective Subject</label>
+                    <select id="studentElective" class="form-input">
+                        <option value="">Select Elective</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 4: Parent Phone (Full width) -->
+            <div class="form-group">
+                <label>Parent Phone</label>
+                <input type="tel" id="studentPhone" class="form-input" placeholder="10-digit mobile number">
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="modal-footer">
+                <button type="button" class="modern-btn btn-text" onclick="closeStudentModal()">
+                    Cancel
+                </button>
+                <button type="submit" class="modern-btn btn-success">
+                    <i class="material-icons-round">save</i> Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- STREAM MODAL - PERFECT ALIGNMENT -->
+<!-- ============================================ -->
+<div id="streamModal" class="modal">
+    <div class="modal-content" style="max-width: 450px;">
+        <div class="modal-header">
+            <h3 id="streamModalTitle">
+                <i class="material-icons-round">school</i> 
+                Add Stream
+            </h3>
+            <button class="close-btn" onclick="closeStreamModal()">
+                <i class="material-icons-round">close</i>
+            </button>
+        </div>
+        
+        <form id="streamForm" onsubmit="saveStream(event)">
+            <div class="form-group">
+                <label>Stream Name <span style="color: #ef4444;">*</span></label>
+                <input type="text" id="streamName" class="form-input" 
+                       placeholder="e.g., BCA, BBA, BCOM" 
+                       style="text-transform: uppercase;" required>
+                <small style="color: #6b7280; font-size: 11px; display: block; margin-top: 4px;">
+                    Will be converted to uppercase
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label>Stream Code <span style="color: #ef4444;">*</span></label>
+                <input type="text" id="streamCode" class="form-input" 
+                       placeholder="e.g., bca, bba, bcom" 
+                       style="text-transform: lowercase;" required>
+                <small style="color: #6b7280; font-size: 11px; display: block; margin-top: 4px;">
+                    Lowercase URL-friendly code
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label>Number of Semesters <span style="color: #ef4444;">*</span></label>
+                <select id="streamSemesters" class="form-input" required>
+                    <option value="">Select Semesters</option>
+                    <option value="4">4 Semesters (2 Years)</option>
+                    <option value="6">6 Semesters (3 Years)</option>
+                    <option value="8">8 Semesters (4 Years)</option>
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="modern-btn btn-text" onclick="closeStreamModal()">
+                    Cancel
+                </button>
+                <button type="submit" class="modern-btn btn-success">
+                    <i class="material-icons-round">save</i> Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SUBJECT MODAL - PERFECT ALIGNMENT -->
+<!-- ============================================ -->
+<div id="subjectModal" class="modal">
+    <div class="modal-content" style="max-width: 550px;">
+        <div class="modal-header">
+            <h3 id="subjectModalTitle">
+                <i class="material-icons-round">menu_book</i> 
+                Add Subject
+            </h3>
+            <button class="close-btn" onclick="closeSubjectModal()">
+                <i class="material-icons-round">close</i>
+            </button>
+        </div>
+        
+        <form id="subjectForm" onsubmit="saveSubject(event)">
+            <!-- Row 1: Name & Code (2 columns: 65% + 35%) -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Subject Name <span style="color: #ef4444;">*</span></label>
+                    <input type="text" id="subjectName" class="form-input" 
+                           placeholder="e.g., Financial Accounting" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Code <span style="color: #ef4444;">*</span></label>
+                    <input type="text" id="subjectCode" class="form-input" 
+                           placeholder="e.g., FA101" required>
+                </div>
+            </div>
+
+            <!-- Row 2: Stream & Semester (2 columns: 65% + 35%) -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Stream <span style="color: #ef4444;">*</span></label>
+                    <select id="subjectStream" class="form-input" required>
+                        <option value="">Select Stream</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Semester <span style="color: #ef4444;">*</span></label>
+                    <select id="subjectSemester" class="form-input" required>
+                        <option value="">Select</option>
+                        <option value="1">Sem 1</option>
+                        <option value="2">Sem 2</option>
+                        <option value="3">Sem 3</option>
+                        <option value="4">Sem 4</option>
+                        <option value="5">Sem 5</option>
+                        <option value="6">Sem 6</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 3: Subject Type (Full width) -->
+            <div class="form-group">
+                <label>Subject Type <span style="color: #ef4444;">*</span></label>
+                <select id="subjectType" class="form-input" onchange="toggleLanguageField()" required>
+                    <option value="">Select Type</option>
+                    <option value="CORE">Core Subject</option>
+                    <option value="ELECTIVE">Elective</option>
+                    <option value="LANGUAGE">Language</option>
+                </select>
+            </div>
+
+            <!-- Conditional: Language Type (Full width) -->
+            <div class="form-group hidden" id="languageTypeGroup">
+                <label>Language Type <span style="color: #ef4444;">*</span></label>
+                <input type="text" id="subjectLanguageType" class="form-input" 
+                       placeholder="e.g., Kannada, Hindi, Tamil">
+                <small style="color: #6b7280; font-size: 11px; display: block; margin-top: 4px;">
+                    Specify the language name
+                </small>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="modern-btn btn-text" onclick="closeSubjectModal()">
+                    Cancel
+                </button>
+                <button type="submit" class="modern-btn btn-success">
+                    <i class="material-icons-round">save</i> Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <!-- Bulk Upload Modal -->
+
+<div id="bulkUploadModal" class="modal">
+    <div class="modal-content" style="max-width: 620px;">
+        <div class="modal-header">
+            <h3>
+                <i class="material-icons-round">upload_file</i> 
+                Bulk Upload Students
+            </h3>
+            <button class="close-btn" onclick="closeBulkUploadModal()">
+                <i class="material-icons-round">close</i>
+            </button>
+        </div>
+        
+        <!-- Instructions -->
+        <p style="margin: 0 0 24px 0; color: #6b7280; font-size: 14px; line-height: 1.5;">
+            Select Stream and Semester, then upload Excel with student details.
+        </p>
+
+        <!-- Selection Area - Perfectly Aligned -->
+        <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <!-- Stream Column -->
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #374151;">
+                        Stream <span style="color: #ef4444;">*</span>
+                    </label>
+                    <select id="bulkStream" class="form-input" style="width: 100%;" required>
+                        <option value="">Select Stream</option>
+                    </select>
+                </div>
+                
+                <!-- Semester Column -->
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #374151;">
+                        Semester <span style="color: #ef4444;">*</span>
+                    </label>
+                    <select id="bulkSemester" class="form-input" style="width: 100%;" required>
+                        <option value="">Select Semester</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- File Upload Area - Perfectly Centered -->
+        <div style="border: 2px dashed #d1d5db; border-radius: 12px; padding: 48px 24px; text-align: center; background: #f9fafb; margin-bottom: 24px;">
+            <!-- File Icon -->
+            <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                <i class="material-icons-round" style="font-size: 64px; color: #9ca3af;">description</i>
+            </div>
+            
+            <!-- Hidden File Input -->
+            <input type="file" id="bulkFileInput" accept=".xlsx,.xls,.csv" style="display:none;" />
+            
+            <!-- Upload Button -->
+            <button type="button" class="modern-btn btn-primary" 
+                    onclick="document.getElementById('bulkFileInput').click()" 
+                    style="padding: 10px 28px; font-size: 14px; margin-bottom: 16px;">
+                <i class="material-icons-round">upload</i>
+                Choose Excel File
+            </button>
+            
+            <!-- File Name Display -->
+            <p id="bulkFileName" style="margin: 0 0 16px 0; color: #6366f1; font-size: 14px; font-weight: 600; min-height: 22px;"></p>
+            
+            <!-- Required Columns Info -->
+            <p style="margin: 0; font-size: 12px; color: #6b7280; line-height: 1.6;">
+                Required columns: <span style="font-weight: 600; color: #374151;">studentID, name, parentPhone,<br>languageSubject, electiveSubject</span>
+            </p>
+        </div>
+        
+        <!-- Footer Actions - Right Aligned -->
+        <div style="display: flex; justify-content: flex-end; gap: 12px; padding-top: 4px;">
+            <button type="button" class="modern-btn btn-text" onclick="closeBulkUploadModal()">
+                Cancel
+            </button>
+            <button type="button" class="modern-btn btn-success" onclick="processBulkUpload()">
+                <i class="material-icons-round">upload</i>
+                Upload Students
+            </button>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div style="text-align: center;">
+            <div class="spinner"></div>
+            <div style="margin-top: 16px; color: var(--primary); font-weight: 600;">Loading...</div>
+        </div>
+    </div>
+ 
+
+
+  
+    <script src="js/streamdata.js"></script>
+
+   
+
+</body>
+</html>
