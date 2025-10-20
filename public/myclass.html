@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Attendance</title>
+  
+  <link rel="icon" type="image/png" href="logo2.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #FFFFFF;
+      padding-bottom: 100px;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    .header {
+      background: white;
+      padding: 20px;
+      box-shadow: none;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .menu-icon {
+      width: 28px;
+      height: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .menu-icon span {
+      width: 100%;
+      height: 3px;
+      background: #1E293B;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #94A3B8 0%, #64748B 100%);
+      flex-shrink: 0;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .greeting {
+      margin-bottom: 0;
+    }
+
+    .greeting h1 {
+      font-size: 26px;
+      font-weight: 400;
+      color: #64748B;
+      margin-bottom: 0px;
+      line-height: 1.2;
+    }
+
+    .greeting h1 span {
+      font-weight: 700;
+      color: #1E293B;
+    }
+
+    /* MAIN */
+    main {
+      padding: 0 20px;
+      padding-bottom: 100px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-top: 8px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1E293B;
+    }
+
+    .see-all {
+      font-size: 14px;
+      font-weight: 500;
+      color: #64748B;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .add-subject-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #6366F1;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+      transition: all 0.2s;
+    }
+
+    .add-subject-btn .material-symbols-rounded {
+      font-size: 24px;
+      color: white;
+    }
+
+    .add-subject-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* CLASS CARDS */
+    .cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .class-card {
+      background: #F8F9FA;
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .class-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .class-date {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 400;
+    }
+
+    .class-time {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 400;
+    }
+
+    .class-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1E293B;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .class-subject {
+      font-size: 15px;
+      color: #64748B;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .class-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .class-btn {
+      flex: 1;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .btn-cancel {
+      background: white;
+      color: #1E293B;
+      border: 1px solid #E2E8F0;
+    }
+
+    .btn-cancel:active {
+      background: #F8F9FA;
+    }
+
+    .btn-attend {
+      background: #6366F1;
+      color: white;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+    }
+
+    .btn-attend:active {
+      transform: scale(0.98);
+      background: #4F46E5;
+    }
+
+    /* BOTTOM NAV */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      padding: 12px 24px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      box-shadow: 0 -2px 20px rgba(0,0,0,0.08);
+      border-radius: 0;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: #94A3B8;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      background: none;
+      padding: 8px 12px;
+    }
+
+    .nav-item.active {
+      color: #6366F1;
+    }
+
+    .nav-item .material-symbols-rounded {
+      font-size: 26px;
+      font-variation-settings: 'FILL' 0;
+    }
+
+    .nav-item.active .material-symbols-rounded {
+      font-variation-settings: 'FILL' 1;
+    }
+
+    .nav-label {
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .nav-indicator {
+      display: none;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background: white;
+      box-shadow: 2px 0 16px rgba(0,0,0,0.08);
+      transition: left 0.3s;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .sidebar.show {
+      left: 0;
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      z-index: 999;
+    }
+
+    .sidebar-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid #F1F5F9;
+    }
+
+    .sidebar-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .sidebar-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .sidebar-user h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1E293B;
+      margin-bottom: 2px;
+    }
+
+    .sidebar-user p {
+      font-size: 12px;
+      color: #64748B;
+    }
+
+    .sidebar-nav {
+      padding: 16px;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #1E293B;
+      margin-bottom: 4px;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      transition: all 0.2s;
+    }
+
+    .sidebar-item:hover {
+      background: #F1F5F9;
+    }
+
+    .sidebar-item.active {
+      background: #EFF6FF;
+      color: #3B82F6;
+    }
+
+    .sidebar-item .material-symbols-rounded {
+      font-size: 22px;
+    }
+
+    .sidebar-label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* EMPTY STATE */
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .empty-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 12px;
+      background: white;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #F1F5F9;
+    }
+
+    .empty-icon .material-symbols-rounded {
+      font-size: 36px;
+      color: #94A3B8;
+      opacity: 0.6;
+    }
+
+    .empty-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1E293B;
+      margin-bottom: 4px;
+    }
+
+    .empty-text {
+      font-size: 13px;
+      color: #64748B;
+    }
+
+    .empty-action-btn {
+      margin-top: 16px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      background: #6366F1;
+      color: white;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+      transition: all 0.2s;
+    }
+
+    .empty-action-btn .material-symbols-rounded {
+      font-size: 18px;
+    }
+
+    .empty-action-btn:active {
+      transform: scale(0.98);
+      background: #4F46E5;
+    }
+
+    /* FORM PAGE */
+    .form-page {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      z-index: 1000;
+      padding: 20px;
+      padding-bottom: 100px;
+      overflow-y: auto;
+    }
+
+    .form-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .back-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .back-btn .material-symbols-rounded {
+      font-size: 20px;
+      color: #1E293B;
+    }
+
+    .back-btn:active {
+      background: #E2E8F0;
+    }
+
+    .form-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1E293B;
+    }
+
+    .form-card {
+      background: white;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+      border: none;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1E293B;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: inherit;
+      background: #F8F9FA;
+      color: #1E293B;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: #6366F1;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 20px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #6366F1;
+      color: white;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+      background: #4F46E5;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #1E293B;
+      border: 1px solid #E2E8F0;
+    }
+
+    .btn-secondary:active {
+      background: #F8F9FA;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { firebaseConfig } from './firebase-config.js';
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    
+    window.firebaseAuth = auth;
+    window.firebaseSignOut = signOut;
+    window.firebaseOnAuthStateChanged = onAuthStateChanged;
+    
+    onAuthStateChanged(auth, (user) => {
+      if (user && user.email) {
+        const email = user.email;
+        const initials = email.substring(0, 2).toUpperCase();
+        
+        document.querySelectorAll('[id="userAvatar"]').forEach(el => el.textContent = initials);
+        
+        const userName = email.split('@')[0]
+          .replace(/[._]/g, ' ')
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        
+        document.querySelectorAll('[id="userName"]').forEach(el => el.textContent = userName);
+        document.querySelectorAll('[id="userEmail"]').forEach(el => el.textContent = email);
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <div class="avatar" id="userAvatar">
+        <img src="https://ui-avatars.com/api/?name=Praveen+Kumar&background=6366F1&color=fff&size=96" alt="User Avatar" onerror="this.style.display='none'; this.parentElement.textContent='PR';">
+      </div>
+      
+      <div class="menu-icon" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="greeting">
+      <h1>Hello,</h1>
+      <h1><span id="userName">Praveen</span></h1>
+    </div>
+  </header>
+
+  <!-- SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMenu()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="menu-icon" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      
+      <div class="sidebar-profile">
+        <div class="sidebar-avatar" id="userAvatar">TE</div>
+        <div class="sidebar-user">
+          <h3 id="userName">Teacher</h3>
+          <p id="userEmail">teacher@example.com</p>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="myclass.html" class="sidebar-item active">
+        <span class="material-symbols-rounded">school</span>
+        <span class="sidebar-label">My Classes</span>
+      </a>
+      <a href="promotion.html" class="sidebar-item">
+        <span class="material-symbols-rounded">upgrade</span>
+        <span class="sidebar-label">Promote Students</span>
+      </a>
+      <a href="msg.html" class="sidebar-item">
+        <span class="material-symbols-rounded">chat</span>
+        <span class="sidebar-label">WhatsApp</span>
+      </a>
+      <a href="report.html" class="sidebar-item">
+        <span class="material-symbols-rounded">bar_chart</span>
+        <span class="sidebar-label">Reports</span>
+      </a>
+      <button onclick="viewAttendance()" class="sidebar-item">
+        <span class="material-symbols-rounded">visibility</span>
+        <span class="sidebar-label">View Attendance</span>
+      </button>
+      <a href="settings.html" class="sidebar-item">
+        <span class="material-symbols-rounded">settings</span>
+        <span class="sidebar-label">Settings</span>
+      </a>
+      <button onclick="logout()" class="sidebar-item" style="color: #EF4444; margin-top: 20px;">
+        <span class="material-symbols-rounded">logout</span>
+        <span class="sidebar-label">Logout</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+    <!-- TODAY -->
+    <div id="todaySection">
+      <div class="section-header">
+        <h2 class="section-title">My Class</h2>
+      </div>
+
+      <div id="emptyQueuePrompt" class="empty hidden">
+        <div class="empty-icon">
+          <span class="material-symbols-rounded">event</span>
+        </div>
+        <h3 class="empty-title">No classes today</h3>
+        <p class="empty-text">Add subjects to get started</p>
+      </div>
+
+      <div class="cards-grid" id="queueList">
+        <!-- Class cards will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <!-- SUBJECTS -->
+    <div id="subjectsSection" class="hidden">
+      <div class="section-header">
+        <h2 class="section-title">Subjects</h2>
+        <button onclick="showCreateSubjectForm()" class="add-subject-btn">
+          <span class="material-symbols-rounded">add</span>
+        </button>
+      </div>
+
+      <div id="emptySubjectsPrompt" class="empty">
+        <div class="empty-icon">
+          <span class="material-symbols-rounded">book</span>
+        </div>
+        <h3 class="empty-title">No subjects yet</h3>
+        <p class="empty-text">Create your first subject</p>
+        <button onclick="showCreateSubjectForm()" class="empty-action-btn">
+          <span class="material-symbols-rounded">add</span>
+          Add Subject
+        </button>
+      </div>
+
+      <div id="subjectsList"></div>
+    </div>
+
+    <!-- COMPLETED -->
+    <div id="completedSection" class="hidden">
+      <div class="section-header">
+        <h2 class="section-title">History</h2>
+      </div>
+
+      <div id="emptyCompletedPrompt" class="empty">
+        <div class="empty-icon">
+          <span class="material-symbols-rounded">history</span>
+        </div>
+        <h3 class="empty-title">No history yet</h3>
+        <p class="empty-text">Completed classes appear here</p>
+      </div>
+
+      <div id="completedList"></div>
+    </div>
+
+    <!-- CREATE FORM -->
+    <div id="createSubjectPage" class="hidden form-page">
+      <div class="form-header">
+        <button class="back-btn" onclick="cancelCreateSubject()">
+          <span class="material-symbols-rounded">arrow_back</span>
+        </button>
+        <h2 class="form-title">Add Subject</h2>
+      </div>
+
+      <div class="form-card">
+        <form id="createSubjectForm">
+          <div class="form-group">
+            <label class="form-label">Stream</label>
+            <select id="createStreamContainer" class="form-select" required>
+              <option value="">Select stream</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Semester</label>
+            <select id="createSemester" class="form-select" required>
+              <option value="">Select semester</option>
+              <option value="1">Semester 1</option>
+              <option value="2">Semester 2</option>
+              <option value="3">Semester 3</option>
+              <option value="4">Semester 4</option>
+              <option value="5">Semester 5</option>
+              <option value="6">Semester 6</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <select id="createSubject" class="form-select" required disabled>
+              <option value="">Select stream & semester first</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" onclick="cancelCreateSubject()" class="btn btn-secondary">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">
+              Add Subject
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-tab="today" onclick="switchTab('today', this)">
+      <span class="material-symbols-rounded">checklist</span>
+      <span class="nav-label">Classes</span>
+    </button>
+    
+    <button class="nav-item" data-tab="subjects" onclick="switchTab('subjects', this)">
+      <span class="material-symbols-rounded">menu_book</span>
+      <span class="nav-label">Subjects</span>
+    </button>
+    
+    <button class="nav-item" data-tab="completed" onclick="switchTab('completed', this)">
+      <span class="material-symbols-rounded">schedule</span>
+      <span class="nav-label">History</span>
+    </button>
+    
+    <button class="nav-item" onclick="viewAttendance()">
+      <span class="material-symbols-rounded">visibility</span>
+      <span class="nav-label">View</span>
+    </button>
+  </nav>
+
+  <script defer src="js/myclass.js"></script>
+  
+  <script>
+    function toggleMenu() {
+      document.getElementById('sidebar').classList.toggle('show');
+      document.getElementById('sidebarOverlay').classList.toggle('show');
+    }
+
+    function switchTab(tabName, element) {
+      // Hide all sections
+      document.getElementById('todaySection').classList.add('hidden');
+      document.getElementById('subjectsSection').classList.add('hidden');
+      document.getElementById('completedSection').classList.add('hidden');
+      
+      // Show selected section
+      document.getElementById(tabName + 'Section').classList.remove('hidden');
+      
+      // Update tab pills
+      document.querySelectorAll('.tab-pill').forEach(pill => pill.classList.remove('active'));
+      document.querySelectorAll('.tab-pill[data-tab="' + tabName + '"]').forEach(pill => pill.classList.add('active'));
+      
+      // Update bottom nav
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      document.querySelectorAll('.nav-item[data-tab="' + tabName + '"]').forEach(item => item.classList.add('active'));
+    }
+
+    function viewAttendance() {
+      window.location.href = 'view-attendance.html';
+    }
+
+    function logout() {
+      if (window.firebaseAuth && window.firebaseSignOut) {
+        window.firebaseSignOut(window.firebaseAuth).then(() => {
+          window.location.href = 'index.html';
+        });
+      }
+    }
+
+    function cancelCreateSubject() {
+      document.getElementById('createSubjectPage').classList.add('hidden');
+      document.getElementById('subjectsSection').classList.remove('hidden');
+      
+      // Update bottom nav to show subjects as active
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      document.querySelectorAll('.nav-item[data-tab="subjects"]').forEach(item => item.classList.add('active'));
+    }
+
+    function showCreateSubjectForm() {
+      ['todaySection', 'subjectsSection', 'completedSection'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById('createSubjectPage').classList.remove('hidden');
+    }
+
+    window.toggleMenu = toggleMenu;
+    window.switchTab = switchTab;
+    window.viewAttendance = viewAttendance;
+    window.logout = logout;
+    window.cancelCreateSubject = cancelCreateSubject;
+    window.showCreateSubjectForm = showCreateSubjectForm;
+  </script>
+</body>
+</html>
